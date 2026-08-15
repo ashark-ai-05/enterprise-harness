@@ -2,6 +2,8 @@
 
 No implementation is authorized yet. This document defines the sequence after approval.
 
+The recommended default is Architecture A: a single-developer, read-only knowledge-pack experiment inside EIL's existing approved boundary. This remains a recommendation until the four questions in `DECISION_REVIEW.md` are confirmed.
+
 ## Phase 0 — validate constraints, contracts and product fit
 
 Time-box a design validation using existing EIL and Observability demonstrations.
@@ -24,9 +26,9 @@ Time-box a design validation using existing EIL and Observability demonstrations
 
 **Pre-gate architecture fork:** if EIL's current local execution and proposed extension are formally approved, run the read-only falsification trial as Architecture A behind EIL's existing stdio tool boundary. If not, use Architecture B and wait for the remote identity prerequisites. Do not fund both walking skeletons. See `DEPLOYMENT_OPTIONS.md`.
 
-## Phase 1 — read-only walking skeleton plus measurement
+## Phase 1 — EIL-native knowledge-pack experiment plus measurement
 
-Only after the architecture fork is resolved: one approved client, one user intent, one manifest-only knowledge pack, EIL search/fetch and Observability events. Architecture A uses the approved local EIL stdio boundary; Architecture B uses authenticated remote MCP/HTTPS and durable server-side run state. No source mutations. Ship the counterfactual measurement at the same time: a sampled shadow whole-corpus retrieval arm plus a small run-level outcome holdout. This control cannot be reconstructed after packs become the default.
+Only after explicit approval: add the smallest proposed knowledge-pack contract behind EIL's existing `REGISTRY`/`callTool()` boundary, use reviewed Git manifests, and exercise Confluence/Jira/code search and fetch through the current approved agent client. No new runtime, registry service, model loop, tool pack, source mutation, sandbox or approval engine. Ship the counterfactual measurement at the same time: a sampled shadow whole-corpus retrieval arm plus a small run-level outcome holdout. This control cannot be reconstructed after packs become the default.
 
 **Gate:** zero ACL escapes; complete citations; deterministic replay of plan/evidence; policy and telemetry coverage demonstrated; scoped-pack hit rate and recall loss meet agreed thresholds.
 
@@ -34,19 +36,25 @@ Only after the architecture fork is resolved: one approved client, one user inte
 
 Architecture A is viable only under explicit approval and does not scale beyond its local single-principal boundary. Architecture B must not deploy until EIL's per-user tokens and HTTP MCP transport are implemented and adversarially verified. This is a dependency on EIL's roadmap, not a harness feature that can be approximated with local ACL filters or endpoint shims.
 
-## Phase 2 — sandboxed work
+## Phase 2 — team-shared read-only service, only if P1 passes
+
+Implement EIL per-user identity over HTTP MCP, a minimal shared pack catalog, authenticated remote clients and adversarial multi-principal ACL validation. Preserve the same pack contracts; do not add mutations.
+
+**Gate:** P1 meets recall/context/adoption gates; per-user identity is fail-closed; source owners accept the shared operating model.
+
+## Phase 3 — governed execution, only if demanded
 
 Add disposable code workspace, bounded patch/test steps, resumability, approval and evidence bundle. Outputs stay in the sandbox or a draft artifact.
 
 **Gate:** isolation tests, retry/idempotency behavior, unknown-completion handling, kill switch and recovery exercise pass.
 
-## Phase 3 — one governed enterprise mutation
+## Phase 4 — one governed enterprise mutation
 
 Add one low-risk reviewable mutation, such as creating a draft pull request or Jira comment. Keep merge/deploy outside the harness.
 
 **Gate:** source owner, Security and Risk approve; preview/approval/reconciliation evidence is complete; pilot users confirm value.
 
-## Phase 4 — catalog and organizational scale
+## Phase 5 — catalog and organizational scale
 
 Add promotion workflows, tenant quotas, domain ownership, conformance suite, SLOs, regional deployment and cost/capacity controls. Expand workflows only when reusable patterns are proven.
 

@@ -64,6 +64,7 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 - [Pack-value measurement](docs/MEASUREMENT.md)
 - [Adoption, identity ceiling and product decomposition](docs/ADOPTION_AND_DECOMPOSITION.md)
 - [Deployment options pending approval evidence](docs/DEPLOYMENT_OPTIONS.md)
+- [Decision review and recommended defaults](docs/DECISION_REVIEW.md)
 - [Security and governance](docs/SECURITY_AND_GOVERNANCE.md)
 - [Delivery plan and decision gates](docs/DELIVERY_PLAN.md)
 - [DeepSeek Harness comparison](docs/REFERENCE_ASSESSMENT.md)
@@ -82,6 +83,8 @@ Start with one bounded, read-heavy workflow through an already-approved client: 
 The pilot should use one model route, one source-control provider, read-only Jira/Confluence access, and a disposable code sandbox. Mutations remain approval-gated. Do not begin implementation until the decisions in [Delivery plan](docs/DELIVERY_PLAN.md) are approved.
 
 The pilot topology is selected by the approval gate above. Architecture A is local, read-only and knowledge-pack-only; Architecture B is remote-service-only and blocked until EIL provides tested per-user identity over HTTP MCP. Neither may centralize behind a privileged EIL service credential.
+
+Given the current clarification that in-house software is allowed and EIL appears acceptable, **Architecture A is the recommended default pending confirmation of the exact EIL change/approval path**. P1 belongs behind EIL's existing read-safe MCP boundary. A separately deployed harness runtime is not part of the pilot.
 
 ## Explicit non-goals
 
