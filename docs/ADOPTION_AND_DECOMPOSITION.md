@@ -7,11 +7,32 @@ created: 2026-08-15
 
 # Adoption, the Identity Ceiling, and Why This Is Three Products
 
-## Constraint update: corporate endpoint is zero-install
+## Constraint update (superseded — read the second paragraph)
 
-The operator confirmed that DeepSeek Harness and other unapproved software cannot be installed on the corporate laptop. This supersedes the local corporate rollout described below. Rung 0 is now a development/test topology outside the restricted endpoint, not a deployable corporate product. The first corporate rung is the centrally hosted, read-only service and is blocked on authenticated remote client integration plus EIL per-user identity over HTTP MCP.
+An earlier revision of this block read: *"Rung 0 is now a development/test
+topology outside the restricted endpoint, not a deployable corporate product.
+The first corporate rung is the centrally hosted, read-only service."* That was
+written when the constraint was read as "no new endpoint software at all."
 
-DeepSeek Harness is no longer a possible reference host in the product path. It remains architecture research only. The distribution argument in this document still holds: already-approved runtimes are the clients; the harness is managed infrastructure behind them.
+**It no longer matches `main`.** The operator has since confirmed *"I can create
+software inhouse. EIL seems to be okay."* The blocked category is unapproved
+**third-party** software, not new software; ADR-010 now makes a reviewed
+first-party extension inside EIL the **default** P1 path. Rung 0 is a corporate
+path again. Leaving the older text in place would have left this document
+contradicting ADR-010 in the same repository.
+
+Two caveats keep it honest. First, provenance is necessary but not sufficient —
+Sonnet's refinement is right that EIL's *shape* (no listening port, no elevated
+install, an interpreter already present) is plausibly why it never met a review
+queue, so P2's gateway, workers and egress will clear a slower lane even as
+first-party code. The predictor of review burden is roughly **provenance ×
+network-and-privilege surface**, and P1 is favourable on both axes while P2 is
+favourable on only one. Second, "seems to be okay" is a working read rather than
+a sign-off, which argues for keeping P1 narrow rather than for choosing B.
+
+DeepSeek Harness remains architecture research only and is not a reference host.
+The distribution argument below still holds: already-approved runtimes are the
+clients.
 
 `main` and `sonnet-draft` both conclude the harness should be runtime-neutral.
 I agree, and I want to argue it from a different direction, because the
@@ -107,16 +128,16 @@ Three rungs. Each is independently useful, each has a distinct security model,
 and the gate between rungs 1 and 2 is §2's dependency. Nothing here requires
 choosing the final architecture in advance, which is the point.
 
-### Rung 0 — isolated development/test only
+### Rung 0 — local, single-developer, on the corporate laptop
 
-Pack manifests in a git repo. Resolution and serving may run in an isolated
-non-corporate/test environment against a test EIL. This is useful for contract
-and measurement development but is not deployable to the restricted corporate
-laptop.
+Pack manifests in a git repo. Resolution runs inside EIL's existing stdio
+process, behind `REGISTRY`/`callTool()`, against the developer's own corpus.
+Identity is ambient and therefore correct.
 
-*Gets you:* engineering feedback on contracts and the evaluation mechanism.
-The real corporate product test must run through an approved client against the
-managed service.
+*Gets you:* the falsification trial, on the real machine, against the real
+corpus, with no new runtime, daemon or shared identity — which is the whole
+point of running it. An earlier revision moved this rung off the corporate
+laptop; ADR-010 has since made it the default P1 path.
 *Does not get you:* shared curation, governance, tool packs, or any
 organisational effect. Every developer maintains their own corpus, which is
 exactly the duplicated-effort problem the product exists to solve.

@@ -63,6 +63,65 @@ observability layer's own <2–3%-of-AI-spend budget.
 
 That makes a design possible that would otherwise be unaffordable.
 
+### The trial needs three arms, not two
+
+**Correction, and it applies to my own earlier text as much as anyone's.** All
+three drafts describe the comparison as *scoped packs versus whole-corpus EIL*.
+Codex's plan records it as "scoped retrieval versus whole-corpus shadow
+comparison"; Sonnet's kill condition uses the same pair. That two-arm design
+**cannot distinguish three different products**, and only the third justifies
+building any pack machinery.
+
+EIL's `search_docs` already accepts a `sources` filter today, documented in its
+own schema as *"for a caller who already knows where the answer lives."* So
+"scoping" is not a thing packs introduce. It already exists, for free, as a
+query parameter.
+
+The three arms:
+
+| Arm | What it is | Cost to build |
+|---|---|---|
+| **A** | Unscoped search over the caller's whole authorised corpus | none — exists |
+| **B** | The finest scope a caller can express **inline**, with no pack | small — `sources` exists; finer selectors are a schema change |
+| **C** | The pack: a named, versioned, owned, curated artifact | the entire programme |
+
+The deltas are what matter, and they answer different questions:
+
+- **A → B measures whether scoping helps at all.** I expect this to be the
+  large one.
+- **B → C measures whether the *pack abstraction* helps** — versioning,
+  curation, ownership, reuse — over a filter someone types.
+
+**Only B → C justifies manifests, locks, registries, promotion workflows and
+this repository.** A two-arm trial reports A → C and invites us to attribute the
+whole gain to packs. If the real win is A → B, the correct product is *better
+filter parameters in `search_docs`* — roughly a day's work — and everything else
+is unbuilt scaffolding around a query string.
+
+Today `sources` is source-family granularity (confluence / jira / code), coarser
+than a pack's selectors, so arm B needs finer parameters — space, project, repo —
+to be a fair comparison. That is a small, independently useful change to EIL, and
+building it first is a feature rather than a detour: it is the honest baseline the
+pack has to beat.
+
+### The reuse problem, which single-query precision cannot see
+
+There is a second reason two arms mislead. A pack's actual value proposition is
+not that one scoped query beats one unscoped query — it is that **many people
+reuse a curated scope without re-deriving it.** That is an amortisation claim,
+and a single-session precision measurement is structurally incapable of
+detecting it: at n=1 query, a pack is strictly worse than an inline filter,
+because someone had to author it.
+
+So the trial must run long enough, over enough queries and eventually enough
+people, to observe reuse — and the B → C metric that matters most is not
+precision but **how often a pack is loaded by someone who did not author it.**
+If that number stays near zero, packs are a personal bookmarking feature and
+should be priced accordingly.
+
+Arm B has the same expiry property as the control itself: once packs are the
+paved road, nobody writes inline filters, and the baseline is gone.
+
 ### Tier 1 — the shadow arm (retrieval quality, always on, sampled)
 
 For a sampled fraction of pack-scoped queries, also run the **unscoped** query
