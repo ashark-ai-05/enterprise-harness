@@ -357,3 +357,31 @@ that §1 rejects for reproducibility and §2 rejects for authorisation. So the
 predicate shape is not an implementation preference that happens to suit the
 trial. It is what a content-free lock already commits us to, and the trial is
 simply the first place the commitment becomes checkable.
+
+### What this rule does *not* prohibit
+
+The invariant is about **candidacy**, and it needs one carve-out stated
+explicitly, because the short form — "a direct fetch-by-lock-id read path is
+prohibited" — can be read to forbid something EIL's contract depends on.
+
+EIL is **two-phase by design**: *"search returns ids and snippets, the agent
+fetches only what it actually needs."* The second phase is `get_doc(id)`, and it
+is a fetch by id. It is also already correct: its query is
+`FROM documents d WHERE id = $1 AND visibleSql(2, 3, 4, includeSuperseded)` —
+it composes the shared clause rather than hand-writing its own, which is exactly
+what the `search_code` path failed to do.
+
+So, precisely:
+
+| Shape | Status |
+|---|---|
+| Pack scope as `AND d.id = ANY(lock_ids)` on the FTS query | **required** |
+| `get_doc(id)` on a document surfaced by pack-scoped search | **allowed** — it is phase two, and it already composes `visibleSql()` |
+| Returning the lock's documents *in place of* searching them | **prohibited** |
+| Any new read path that hand-writes its own ACL clauses | **prohibited** |
+
+The distinction is not fetch-versus-search. It is whether a path **composes the
+shared visibility clause** and whether the lock is being used as a **scope** or
+as an **answer**. An implementer who reads the short form literally could
+conclude that a pack-resolved document may never be fetched, which would break
+the two-phase contract every EIL client already depends on.
