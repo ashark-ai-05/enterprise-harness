@@ -49,9 +49,15 @@ Stated explicitly so the synthesis owner knows where the disagreements are not.
 
 Three places, in descending order of how much I care.
 
-### 1. The delivery sequence puts measurement last, and one part of it cannot be added later
+### 1. The delivery sequence put measurement last, and one part of it could not be added later
 
-`main` `DELIVERY_PLAN.md` reaches measurement at Phase 4. Sonnet's kill
+> **Resolved.** `DELIVERY_PLAN.md` now ships the counterfactual with the Phase 1
+> walking skeleton, and the trial has since gained a third arm
+> ([MEASUREMENT.md](MEASUREMENT.md)). This section is kept as the record of why,
+> not as a live criticism — the tense below is the state at the time of writing.
+
+At the time of writing, `main`'s `DELIVERY_PLAN.md` reached measurement only at
+Phase 4. Sonnet's kill
 conditions (`CRITICAL_REVIEW.md` §5) are the right instinct — "if scoped packs
 don't beat mounting the whole corpus, stop" — but nothing in either plan
 establishes the comparison that test requires.
