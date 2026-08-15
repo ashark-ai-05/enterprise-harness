@@ -4,7 +4,7 @@
 
 The harness sits between user intent and enterprise capabilities. It must coordinate long-running, resumable workflows while preserving EIL authorization and producing Observability evidence. It must not become a privileged bypass around either platform.
 
-Corporate endpoints cannot install unapproved runtimes. The architecture therefore assumes **zero new endpoint software**. Existing approved clients are presentation/control surfaces; all new harness code executes in approved enterprise infrastructure.
+Corporate endpoints cannot install unapproved runtimes. The architecture therefore defaults to **zero new endpoint software**. Existing approved clients are presentation/control surfaces; all authoritative harness code executes in approved enterprise infrastructure. A reviewed stdio transport adapter is optional only if corporate approval explicitly permits the same installation shape as EIL.
 
 ## Logical architecture
 
@@ -57,11 +57,11 @@ flowchart TB
 
 ## Endpoint and access boundary
 
-The endpoint contains no harness runtime, local database, local EIL corpus, plugin engine, long-lived credential or sandbox. Approved-client configuration may contain only the managed service URL, public metadata and an enterprise authentication flow.
+The default endpoint contains no harness runtime, local database, local EIL corpus, plugin engine, long-lived credential or sandbox. Approved-client configuration contains only the managed service URL, public metadata and an enterprise authentication flow.
 
 The enterprise access gateway authenticates the human/workload through enterprise SSO, binds tenant/groups/device posture/purpose/session, terminates only approved remote MCP/HTTPS, and preserves the original principal in a signed audience-bound delegation token for EIL and tools. No client-supplied user header is trusted.
 
-The harness service identity authenticates the workload to EIL, but EIL authorization evaluates the delegated end-user principal and source ACL. If an approved client cannot perform the required enterprise auth and remote interface, that client remains unsupported until its vendor or the approved gateway supplies it. Do not install an ad-hoc endpoint shim.
+The harness service identity authenticates the workload to EIL, but EIL authorization evaluates the delegated end-user principal and source ACL. If an approved client cannot perform the required enterprise auth and remote interface, that client remains unsupported until its vendor or the approved gateway supplies it. A local stdio bridge may be considered only as a reviewed, pinned artifact with no policy logic or authority; never fetch-and-run it and never use an ad-hoc shim.
 
 ## Managed-service topology
 
@@ -182,7 +182,7 @@ Begin as a modular monolith with separately runnable API, scheduler and worker r
 
 Only split services where scaling, ownership, isolation or regulatory boundaries demand it. The first likely separations are sandbox execution and high-volume event export, not catalogs.
 
-Corporate laptops are never a worker pool. Long-running jobs survive client disconnects, and reconnecting clients resume from durable run state after reauthorization. There is no offline corporate mode: a content snapshot on the laptop would reintroduce installation, revocation, retention and exfiltration problems the central design avoids.
+Corporate laptops are never a worker pool. Long-running jobs survive client disconnects, and reconnecting clients resume from durable run state after reauthorization. There is no offline content mode: a corpus snapshot on the laptop would reintroduce revocation, retention and exfiltration problems the central design avoids.
 
 ## Failure semantics
 

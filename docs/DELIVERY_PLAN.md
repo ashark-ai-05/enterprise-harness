@@ -16,8 +16,9 @@ Time-box a design validation using existing EIL and Observability demonstrations
 - Run a server-side falsification trial through an approved client: compare scoped knowledge packs with direct whole-corpus EIL on retrieval precision, context size and setup time. Do not build a registry unless the pack abstraction earns its complexity.
 - Read and test EIL's actual coverage/freshness contracts (`coverage`, source health, evidence bounds) before specifying harness equivalents. Extend those contracts; do not create a second definition of completeness or staleness.
 - Validate target clients can propagate the real caller identity through MCP. Record EIL per-user token and HTTP MCP delivery as a hard dependency for any shared index.
-- Inventory which already-approved Copilot/Amp/IDE clients support enterprise-authenticated remote MCP or approved HTTPS integration. No endpoint installation is an admissible workaround.
+- Inventory which already-approved Copilot/Amp/IDE clients support enterprise-authenticated remote MCP or approved HTTPS integration. No unapproved endpoint installation is an admissible workaround.
 - Confirm approved server runtime, artifact registry, deployment platform, private connectivity, SSO/OAuth delegation and corporate proxy paths.
+- Confirm directly whether EIL's current source/lockfile/stdio installation is approved on the same corporate laptop, temporarily excepted, or running in another trust boundary. Do not infer this from development use.
 
 **Gate:** scoped packs demonstrate measurable value; approve the product boundary, pack semantics, ownership, pilot workflow, risk controls and success metrics.
 
@@ -71,6 +72,7 @@ Add promotion workflows, tenant quotas, domain ownership, conformance suite, SLO
 9. Agree SLOs, quotas, budget limits and pilot success thresholds.
 10. Confirm the EIL per-user HTTP identity milestone and name its owner/date before planning any shared-index phase.
 11. Confirm at least one already-approved client can use the authenticated remote interface without installing harness software.
+12. Decide whether a minimal reviewed stdio transport adapter is permitted. This is optional and does not change the managed-service authority boundary.
 
 ## Work explicitly excluded until approval
 

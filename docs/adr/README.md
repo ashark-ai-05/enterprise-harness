@@ -9,5 +9,4 @@
 - [ADR-007: Separate knowledge and tool packs](007-SEPARATE-KNOWLEDGE-AND-TOOL-PACKS.md)
 - [ADR-008: Content-free resolution locks](008-CONTENT-FREE-RESOLUTION-LOCKS.md)
 - [ADR-009: Ship counterfactual measurement with packs](009-MEASURE-PACKS-FROM-FIRST-USE.md)
-- [ADR-010: Zero new corporate endpoint software](010-ZERO-ENDPOINT-SOFTWARE.md)
-
+- [ADR-010: No unapproved corporate endpoint runtime](010-ZERO-ENDPOINT-SOFTWARE.md)

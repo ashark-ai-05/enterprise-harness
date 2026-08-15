@@ -70,9 +70,9 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 
 ## Corporate endpoint constraint
 
-Corporate laptops cannot install DeepSeek Harness or other unapproved runtime software. DeepSeek Harness is therefore architecture research only: not a dependency, fork, bundle, adapter, reference client or fallback.
+The corporate laptop cannot install DeepSeek Harness because it is unapproved software. DeepSeek Harness is therefore architecture research only: not a dependency, fork, bundle, adapter, reference client or fallback. Do not generalize this evidence into an unsupported claim that every new endpoint artifact is prohibited; confirm the applicable approval policy in Phase 0.
 
-Enterprise Harness is a centrally managed service exposed through enterprise-authenticated remote MCP/HTTPS. Developers keep using already-approved Copilot, Amp or IDE clients. EIL access, policy, credentials, models, tools, run state, sandboxing and telemetry execute on approved infrastructure. The endpoint receives no harness runtime, corpus, plugin engine or long-lived credential.
+The recommended corporate shape is a centrally managed service exposed through enterprise-authenticated remote MCP/HTTPS. Developers keep using already-approved Copilot, Amp or IDE clients. EIL access, policy, credentials, models, tools, run state, sandboxing and telemetry execute on approved infrastructure. A minimal reviewed stdio adapter is allowed only if the exact EIL-style local installation path is separately confirmed approved; it cannot contain policy, credentials, corpus data or execution authority.
 
 ## Recommended pilot
 
