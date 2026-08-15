@@ -135,10 +135,11 @@ exists to prevent. Two acceptable resolutions, and the trial must state which it
 took:
 
 1. **Index `hierarchy` before the trial**, so B and C are performance-comparable.
-   Preferred, because the index is needed anyway the moment this outgrows one
-   laptop.
+   This is appropriate only if latency is explicitly made a pilot decision
+   metric and the index change is separately approved.
 2. **Exclude latency from the B → C comparison** and compare retrieval quality
-   only, recording latency for A → B alone.
+   only, recording latency for A → B alone. **This is the default** because the
+   pilot exists to test pack value, not to pre-build a production index.
 
 What must not happen is reporting a B → C latency delta without saying which
 arm was indexed.

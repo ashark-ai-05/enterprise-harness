@@ -28,6 +28,8 @@ Time-box a design validation using existing EIL and Observability demonstrations
 
 Only after explicit approval: extend EIL search with the finest useful inline selectors for Confluence space, Jira project and code repository/path, behind its existing `REGISTRY`/`callTool()` boundary. Compare unscoped arm A with inline-filter arm B. This is independently useful even if packs are rejected.
 
+The existing `documents.hierarchy` data supports the laptop trial without re-ingestion, but it is unindexed. Exclude B → C latency from product decisions by default. Add an index only through a separate approved change if comparable latency is explicitly required; do not let indexed lock lookups manufacture a pack-performance win over an unindexed inline filter.
+
 **Gate:** inline scoping improves context/setup without material recall loss. If not, stop; packs cannot repair a failed scoping premise.
 
 ## Phase 1B — EIL-native pack mechanics and three-arm measurement
