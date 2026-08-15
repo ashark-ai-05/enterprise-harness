@@ -4,7 +4,9 @@ Status: proposed
 
 ## Decision
 
-The first read-only pack pilot includes a sampled shadow whole-corpus retrieval arm and a small run-level outcome holdout. Measure scoped-pack hit rate, recall loss, retrieval precision, context reduction and accepted outcomes before building the registry or governed execution plane.
+The first read-only work uses three retrieval arms: A whole authorised corpus, B equivalent inline selectors without a pack, and C a named/versioned pack. It also includes a small run-level outcome holdout. A → B measures the value of scoping; B → C measures the incremental pack abstraction. Measure recall loss, precision, context reduction and accepted outcomes before building the registry or governed execution plane.
+
+Because a pack's distinctive value is amortized curation, follow the single-developer mechanics trial with Git-distributed manifests across multiple developers and measure use by non-authors. A single-author query cannot prove enterprise pack value.
 
 Assignments are run-level, never permanent user-level cohorts. Evaluation fixtures are authored independently of pack selectors.
 

@@ -15,7 +15,7 @@ Time-box a design validation using existing EIL and Observability demonstrations
 - Validate the existing EIL toolchain and the exact internal approval path for reviewed first-party changes.
 - Measure the baseline corpus/query families, retrieval volume, context size and evaluation cost needed for the falsification trial.
 - Threat-model pack scoping, partial views and indirect prompt injection. Defer mutation/sandbox threat modelling until P2 is requested.
-- Through the selected approved topology, compare scoped knowledge packs with direct whole-corpus EIL on recall, precision, context size and setup time. Do not build a registry unless the pack abstraction earns its complexity.
+- Design the three-arm comparison: A whole authorised corpus, B equivalent inline selectors, C named/versioned pack. Do not attribute A → B scoping gains to the pack abstraction; only B → C and non-author reuse can justify pack machinery.
 - Read and test EIL's actual coverage/freshness contracts (`coverage`, source health, evidence bounds) before specifying harness equivalents. Extend those contracts; do not create a second definition of completeness or staleness.
 - Record client identity propagation, EIL per-user tokens and HTTP MCP as Phase-2 dependencies; do not put them on the local P1 critical path.
 - Confirm directly whether EIL's current source/lockfile/stdio installation is approved on the same corporate laptop, temporarily excepted, or running in another trust boundary. Do not infer this from development use.
@@ -24,37 +24,49 @@ Time-box a design validation using existing EIL and Observability demonstrations
 
 **Pre-gate architecture fork:** if EIL's current local execution and proposed extension are formally approved, run the read-only falsification trial as Architecture A behind EIL's existing stdio tool boundary. If not, use Architecture B and wait for the remote identity prerequisites. Do not fund both walking skeletons. See `DEPLOYMENT_OPTIONS.md`.
 
-## Phase 1 — EIL-native knowledge-pack experiment plus measurement
+## Phase 1A — establish the honest inline-filter baseline
 
-Only after explicit approval: add the smallest proposed knowledge-pack contract behind EIL's existing `REGISTRY`/`callTool()` boundary, use reviewed Git manifests, and exercise Confluence/Jira/code search and fetch through the current approved agent client. No new runtime, registry service, model loop, tool pack, source mutation, sandbox or approval engine. Ship the counterfactual measurement at the same time: a sampled shadow whole-corpus retrieval arm plus a small run-level outcome holdout. This control cannot be reconstructed after packs become the default.
+Only after explicit approval: extend EIL search with the finest useful inline selectors for Confluence space, Jira project and code repository/path, behind its existing `REGISTRY`/`callTool()` boundary. Compare unscoped arm A with inline-filter arm B. This is independently useful even if packs are rejected.
 
-**Gate:** zero ACL escapes; complete citations; deterministic replay of plan/evidence; policy and telemetry coverage demonstrated; scoped-pack hit rate and recall loss meet agreed thresholds.
+**Gate:** inline scoping improves context/setup without material recall loss. If not, stop; packs cannot repair a failed scoping premise.
+
+## Phase 1B — EIL-native pack mechanics and three-arm measurement
+
+Add the smallest content-free knowledge-pack contract, use reviewed Git manifests, and compare A unscoped, B equivalent inline selectors and C the pack. No new runtime, registry service, model loop, tool pack, source mutation, sandbox or approval engine. Ship the shadow comparison and run-level outcome holdout at the same time. This control cannot be reconstructed after packs become the paved road.
+
+**Gate:** zero ACL escapes; complete citations; deterministic evidence identity; policy/telemetry coverage; no material pack recall loss; pack setup is understandable. Do not claim enterprise pack value from a single author.
 
 ## Shared-service prerequisite
 
 Architecture A is viable only under explicit approval and does not scale beyond its local single-principal boundary. Architecture B must not deploy until EIL's per-user tokens and HTTP MCP transport are implemented and adversarially verified. This is a dependency on EIL's roadmap, not a harness feature that can be approximated with local ACL filters or endpoint shims.
 
-Before Phase 2, inventory approved clients' authenticated remote MCP/HTTPS support and confirm approved server runtime, artifact registry, deployment platform, private connectivity, SSO/OAuth delegation and corporate proxy paths.
+Before Phase 3, inventory approved clients' authenticated remote MCP/HTTPS support and confirm approved server runtime, artifact registry, deployment platform, private connectivity, SSO/OAuth delegation and corporate proxy paths.
 
-## Phase 2 — team-shared read-only service, only if P1 passes
+## Phase 2 — Git-distributed multi-developer reuse trial
+
+Distribute reviewed pack manifests through Git while every developer continues to query their own local EIL identity/corpus. Measure use by non-authors, time saved recreating selectors, pack health/rot and outcome guardrails. No shared index or registry service.
+
+**Gate:** meaningful non-author reuse. If reuse stays near zero, keep saved filters as a small EIL feature and stop the enterprise pack platform.
+
+## Phase 3 — team-shared read-only service, only if reuse passes
 
 Implement EIL per-user identity over HTTP MCP, a minimal shared pack catalog, authenticated remote clients and adversarial multi-principal ACL validation. Preserve the same pack contracts; do not add mutations.
 
-**Gate:** P1 meets recall/context/adoption gates; per-user identity is fail-closed; source owners accept the shared operating model.
+**Gate:** P1/P2 meet recall/context/reuse gates; per-user identity is fail-closed; source owners accept the shared operating model.
 
-## Phase 3 — governed execution, only if demanded
+## Phase 4 — governed execution, only if demanded
 
 Add disposable code workspace, bounded patch/test steps, resumability, approval and evidence bundle. Outputs stay in the sandbox or a draft artifact.
 
 **Gate:** isolation tests, retry/idempotency behavior, unknown-completion handling, kill switch and recovery exercise pass.
 
-## Phase 4 — one governed enterprise mutation
+## Phase 5 — one governed enterprise mutation
 
 Add one low-risk reviewable mutation, such as creating a draft pull request or Jira comment. Keep merge/deploy outside the harness.
 
 **Gate:** source owner, Security and Risk approve; preview/approval/reconciliation evidence is complete; pilot users confirm value.
 
-## Phase 5 — catalog and organizational scale
+## Phase 6 — catalog and organizational scale
 
 Add promotion workflows, tenant quotas, domain ownership, conformance suite, SLOs, regional deployment and cost/capacity controls. Expand workflows only when reusable patterns are proven.
 

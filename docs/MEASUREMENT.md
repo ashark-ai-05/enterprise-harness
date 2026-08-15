@@ -122,21 +122,23 @@ should be priced accordingly.
 Arm B has the same expiry property as the control itself: once packs are the
 paved road, nobody writes inline filters, and the baseline is gone.
 
-### Tier 1 — the shadow arm (retrieval quality, always on, sampled)
+### Tier 1 — the three-arm shadow comparison (retrieval quality, sampled)
 
-For a sampled fraction of pack-scoped queries, also run the **unscoped** query
-against the caller's full authorised corpus. Do not show it to anyone. Do not
-put it in the model's context. Record only which documents each arm returned,
-and later join against which documents the run actually **cited in an accepted
-outcome**.
+For a sampled fraction of pack-scoped queries, run all three retrieval forms:
+**A** unscoped, **B** equivalent inline selectors, and **C** the resolved pack.
+Show only the assigned arm to the caller/model. Record only document/version
+identities, rankings, latency and coverage for the shadow arms, then join against
+which documents the run actually **cited in an accepted outcome**.
 
 That join answers the question directly:
 
-- **Pack precision gain** — did scoping remove documents that were never going
-  to be cited? (The claimed benefit.)
-- **Pack recall loss** — did scoping remove documents the unscoped arm found
-  *and the run would have cited*? (The claimed benefit's hidden cost, and the
-  number that kills the product if it is large.)
+- **A → B scoping gain/loss** — what finer selectors add over whole-corpus
+  retrieval. This justifies better search filters, not packs.
+- **B → C retrieval delta** — whether pack resolution changes the effective
+  selector set, ranking, freshness or coverage. For an equivalent lock this
+  should be explainably small; a large unexplained delta is a defect.
+- **Pack recall loss** — did C exclude evidence found by A or B that later
+  proved necessary? This kills the product if material.
 
 Recall loss is the metric that matters and the one nobody measures, because
 measuring it requires exactly this counterfactual. A pack with 30% precision
@@ -144,8 +146,9 @@ gain and 5% recall loss is a good trade. A pack with 30% precision gain and 30%
 recall loss is a machine for producing confident errors, and it will report
 beautifully on every other metric.
 
-This is a **within-request** control. It degrades nobody's experience, needs no
-user cohort, and can run from day one at whatever sample rate the budget allows.
+This is a **within-request** control. It degrades nobody's experience and can
+run from day one at whatever sample rate the budget allows. It does not prove
+pack reuse; that requires multiple authors/consumers and the adoption tier.
 
 ### Tier 2 — the run-level holdout (outcomes, small, permanent)
 

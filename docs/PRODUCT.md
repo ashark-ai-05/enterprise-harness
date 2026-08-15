@@ -91,7 +91,7 @@ Do not promise arbitrary agent swarms. Most enterprise work benefits more from d
 
 Stop or change direction when evidence invalidates the product premise:
 
-- If a server-side trial through an approved client shows scoped knowledge packs do not improve retrieval precision, context efficiency or session setup over direct whole-corpus EIL access, do not build a registry.
+- If finer inline filters do not improve retrieval/context over whole-corpus EIL, stop before packs. If named packs do not add reuse and setup value over equivalent inline filters, keep saved filters as a small EIL feature and do not build a registry.
 - If real usage produces only knowledge packs and teams do not adopt governed tool packs, move saved/scoped pack views into EIL and retire the separate harness rather than preserving a thin coordination layer.
 - If real caller identity cannot propagate through target clients and MCP to EIL, block shared-service rollout; do not compensate with a privileged service credential and harness-side ACLs.
 - If corporate proxy or approved-install constraints exclude the dependency model, change the reference adapter rather than weakening the runtime-neutral contracts.

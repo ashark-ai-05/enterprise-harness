@@ -23,7 +23,7 @@ The critical challenge to the earlier design is decomposition: the repository de
 3. **Pilot scope:** knowledge packs over Confluence, Jira and code only; read/search/fetch/cite; no tool packs, model loop, source mutation, sandbox or approval engine.
 4. **Pilot tenancy:** one developer and their local EIL corpus. Ambient identity is acceptable only inside this single-principal boundary.
 5. **Pack form:** content-free manifest and resolution lock. A pack is a relevance filter, never an authority grant.
-6. **Measurement:** sampled whole-corpus shadow retrieval from first use plus a run-level outcome comparison. Do not wait until packs are standard.
+6. **Measurement:** three retrieval arms from first use—whole corpus, equivalent inline filters, and pack—plus run-level outcomes. A → B values scoping; B → C values the pack abstraction.
 7. **Enterprise target:** remote managed service only after P1 earns continuation and EIL per-user HTTP identity is proven.
 
 ## Decisions challenged or narrowed
@@ -46,6 +46,7 @@ The critical challenge to the earlier design is decomposition: the repository de
 - content-free locks reproduce the evidence identity used by a run;
 - pack telemetry reaches Observability without prompt/source-body capture by default;
 - pilot users choose scoped packs for eligible tasks and report that the boundary is understandable.
+- in a multi-developer follow-on, packs are reused by people who did not author them; otherwise treat packs as personal saved filters, not an enterprise platform.
 
 Numeric recall/context thresholds should be set after a baseline sample rather than chosen to flatter the design. Zero ACL failures and citation completeness are non-negotiable.
 
@@ -55,4 +56,3 @@ Numeric recall/context thresholds should be set after a baseline sample rather t
 2. Are reviewed EIL-repo changes under its current install/launch model allowed on the target laptop? Recommended assumption: yes, verify through the normal internal path.
 3. Knowledge-only first pilot? Recommended: yes.
 4. Single-developer local pilot before shared service? Recommended: yes.
-
