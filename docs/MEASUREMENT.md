@@ -19,10 +19,11 @@ and long on the one decision that has a deadline.
 
 ## 1. The decision that expires
 
-`main`'s `DELIVERY_PLAN.md` reaches measurement at Phase 4. Sonnet's kill
-condition — *"if Stage-0 usage shows scoped packs don't beat mounting the whole
-EIL corpus, stop before building a registry"* — is exactly the right test, but
-nothing in either plan creates the comparison it needs.
+An earlier `DELIVERY_PLAN.md` draft reached measurement only after rollout.
+The synthesized plan now corrects that sequence. Sonnet's kill condition —
+*"if Stage-0 usage shows scoped packs don't beat mounting the whole EIL corpus,
+stop before building a registry"* — is exactly the right test, and it requires
+the comparison below from the first walking skeleton.
 
 **That comparison cannot be reconstructed later.** Once packs are the paved
 road, unscoped runs stop happening. There is no archived control group to dig
