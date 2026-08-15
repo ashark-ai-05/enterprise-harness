@@ -34,3 +34,12 @@ Source: [DeepSeek Harness architecture](https://github.com/deepseek-ai/deepseek-
 
 Likewise, the harness should not absorb EIL. Knowledge ingestion and search have different scaling, governance and freshness semantics from workflow execution. Packs bridge the products through signed manifests and resolution receipts, not copied indexes.
 
+## Build, extend or fork
+
+The recommendation is **runtime-neutral contracts, proven first with a dsh bundle/adapter**.
+
+- Do not fork dsh: it is a large developer-preview codebase that explicitly expects compatibility-breaking changes.
+- Do not make dsh the enterprise contract: existing IDE agents, CI jobs and future runtimes should be able to use the same governed packs and workflows.
+- Do reuse dsh: its agent loop, session log, web/headless profiles, tool pipeline, sandbox and telemetry seams make it a strong reference host and a fast way to validate the product.
+
+The phase-zero spike should answer whether corporate installation, dependency approval and proxy constraints permit a dsh-based reference client. A negative answer changes the adapter, not the pack/workflow/policy contracts.
