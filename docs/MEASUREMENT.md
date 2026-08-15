@@ -155,11 +155,15 @@ choice nobody has made yet**:
 | Fetch locked document ids directly, bypassing FTS | genuinely different | **No** — the confound is real |
 
 `PACK_RESOLUTION.md` now resolves the design: arm C **must** be an ID predicate
-on the same FTS/visibility/validity query, never a direct fetch path. Latency is
+on the same FTS/visibility/validity query, never return the lock's documents in
+place of ranked search. Latency is
 therefore comparable by construction and may be reported across A/B/C, with the
 predicate and query plan recorded. Do not pre-build a production hierarchy
 index merely to balance the experiment; the pilot measures the selected query
 shapes as they are.
+
+After pack-scoped search surfaces a document ID, normal phase-two `get_doc(id)`
+remains allowed and must recompose the shared visibility/validity clause.
 
 What must not happen is reporting a B → C latency delta without proving that
 all arms used the shared read path and recording their predicates/query plans.
