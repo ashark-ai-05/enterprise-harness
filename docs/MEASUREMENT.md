@@ -104,6 +104,45 @@ to be a fair comparison. That is a small, independently useful change to EIL, an
 building it first is a feature rather than a detour: it is the honest baseline the
 pack has to beat.
 
+### What arm B actually costs, and the confound it introduces
+
+Verified in the EIL checkout on 2026-08-15, because "small" is doing a lot of
+work in the paragraph above and Phase 1A now depends on it.
+
+**Arm B is cheap, and cheaper than expected.** `documents.hierarchy` — a `jsonb`
+breadcrumb column, `migrations/0001_init.sql:12` — is already populated by every
+connector Phase 1A names: Confluence sets it from page ancestors, code sets
+`[repo, ...dirs]`, Obsidian and filesystem set the relative path, and **Jira sets
+`[project ?? key-prefix]`**. So Jira-project and Confluence-space scoping need no
+migration and no re-ingest. Arm B is a query into an existing column plus one
+schema parameter, exactly as Sonnet described.
+
+**But it is unindexed.** Across all 29 migrations, `hierarchy` appears only in
+its column definition and one unrelated comment. There is no index on it. That is
+fine for a laptop-scale falsification run and is *not* production-ready — beyond
+personal scale it needs a real index, or an extracted indexed column. Nobody
+should read "about a day's work" as applying to whatever ships after the trial.
+
+**The confound that follows, which is the same error we just fixed wearing
+different clothes.** Tier 1 above records **latency** across the three arms. But
+arm C resolves a pinned lock and fetches by document id — indexed primary-key
+lookups — while arm B scans an unindexed `jsonb` column. **Arm C will look faster
+than arm B for a reason that has nothing to do with curation.**
+
+If that number reaches a decision, we would credit the pack abstraction with an
+indexing artifact, which is precisely the misattribution the three-arm design
+exists to prevent. Two acceptable resolutions, and the trial must state which it
+took:
+
+1. **Index `hierarchy` before the trial**, so B and C are performance-comparable.
+   Preferred, because the index is needed anyway the moment this outgrows one
+   laptop.
+2. **Exclude latency from the B → C comparison** and compare retrieval quality
+   only, recording latency for A → B alone.
+
+What must not happen is reporting a B → C latency delta without saying which
+arm was indexed.
+
 ### The reuse problem, which single-query precision cannot see
 
 There is a second reason two arms mislead. A pack's actual value proposition is
