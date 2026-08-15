@@ -123,26 +123,50 @@ fine for a laptop-scale falsification run and is *not* production-ready — beyo
 personal scale it needs a real index, or an extracted indexed column. Nobody
 should read "about a day's work" as applying to whatever ships after the trial.
 
-**The confound that follows, which is the same error we just fixed wearing
-different clothes.** Tier 1 above records **latency** across the three arms. But
-arm C resolves a pinned lock and fetches by document id — indexed primary-key
-lookups — while arm B scans an unindexed `jsonb` column. **Arm C will look faster
-than arm B for a reason that has nothing to do with curation.**
+**A possible confound in the latency comparison — and a correction to how I
+first stated it.**
 
-If that number reaches a decision, we would credit the pack abstraction with an
-indexing artifact, which is precisely the misattribution the three-arm design
-exists to prevent. Two acceptable resolutions, and the trial must state which it
-took:
+My original text claimed that "arm C resolves a pinned lock and fetches by
+document id — indexed primary-key lookups — while arm B scans an unindexed
+`jsonb` column," and concluded that arm C **will** look faster. **That asserted a
+mechanism the SQL does not support, and I am withdrawing the certainty.**
 
-1. **Index `hierarchy` before the trial**, so B and C are performance-comparable.
-   This is appropriate only if latency is explicitly made a pilot decision
-   metric and the index change is separately approved.
-2. **Exclude latency from the B → C comparison** and compare retrieval quality
-   only, recording latency for A → B alone. **This is the default** because the
-   pilot exists to test pack value, not to pre-build a production index.
+Reading the actual query in `ts/search.ts`, filters do not run as separate
+scans. The driving access path is the full-text index:
 
-What must not happen is reporting a B → C latency delta without saying which
-arm was indexed.
+```sql
+FROM chunks c JOIN documents d ON … CROSS JOIN qq
+WHERE c.tsv @@ qq.loose            -- the FTS index drives the query
+  AND <visibility ACL>
+  AND ($7::text[] IS NULL OR d.source = ANY($7::text[]))   -- filter as predicate
+```
+
+A `hierarchy` filter added the same way is a **predicate evaluated over an
+already-narrowed candidate set**, not a scan of the whole table. The absence of an
+index on `hierarchy` therefore costs far less than "unindexed column" suggests,
+and at laptop scale it may be unmeasurable.
+
+So whether a confound exists at all depends on **how arm C is implemented — a
+choice nobody has made yet**:
+
+| Arm C implementation | Access path | Latency comparable to B? |
+|---|---|---|
+| `AND d.id = ANY(lock_ids)` on the same FTS query | same as A and B | **Yes** — all three arms differ only by predicate |
+| Fetch locked document ids directly, bypassing FTS | genuinely different | **No** — the confound is real |
+
+This does not change the default, and Codex's reasoning for it stands
+independently: exclude B → C latency, compare retrieval quality, and do not
+pre-build a production index merely to balance an experiment. If anything the
+correction *strengthens* that argument — there may be nothing to balance.
+
+What it changes is the status of the exclusion. It is a **default pending arm C's
+design**, not a permanent finding. If arm C lands as a predicate on the same
+query, the arms are comparable and latency becomes usable again; the team should
+revisit it then rather than discard the metric for good on a mechanism that
+turned out not to apply.
+
+What must not happen either way is reporting a B → C latency delta without
+stating which access path each arm used.
 
 ### The reuse problem, which single-query precision cannot see
 
