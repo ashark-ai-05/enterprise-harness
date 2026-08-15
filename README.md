@@ -68,13 +68,19 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 - [DeepSeek Harness comparison](docs/REFERENCE_ASSESSMENT.md)
 - [Architecture decision records](docs/adr/README.md)
 
+## Corporate endpoint constraint
+
+Corporate laptops cannot install DeepSeek Harness or other unapproved runtime software. DeepSeek Harness is therefore architecture research only: not a dependency, fork, bundle, adapter, reference client or fallback.
+
+Enterprise Harness is a centrally managed service exposed through enterprise-authenticated remote MCP/HTTPS. Developers keep using already-approved Copilot, Amp or IDE clients. EIL access, policy, credentials, models, tools, run state, sandboxing and telemetry execute on approved infrastructure. The endpoint receives no harness runtime, corpus, plugin engine or long-lived credential.
+
 ## Recommended pilot
 
-Start with one bounded, read-heavy workflow: **Jira change request → approved Confluence and code packs → cited change plan → acceptance criteria → human approval → sandboxed patch/test → evidence bundle**.
+Start with one bounded, read-heavy workflow through an already-approved client: **Jira change request → approved Confluence and code packs → cited change plan and acceptance criteria → evidence bundle**. Add sandboxed patch/test only after read-only value and identity propagation are proven.
 
 The pilot should use one model route, one source-control provider, read-only Jira/Confluence access, and a disposable code sandbox. Mutations remain approval-gated. Do not begin implementation until the decisions in [Delivery plan](docs/DELIVERY_PLAN.md) are approved.
 
-The pilot begins locally against each developer's own EIL process. Shared/team deployment is blocked until EIL provides tested per-user identity over HTTP MCP; the harness must not centralize behind a privileged EIL service credential.
+The corporate pilot is remote-service-only and is blocked until EIL provides tested per-user identity over HTTP MCP. The harness must not centralize behind a privileged EIL service credential. Development may use isolated test environments, but local developer topology is not a corporate product deployment rung.
 
 ## Explicit non-goals
 

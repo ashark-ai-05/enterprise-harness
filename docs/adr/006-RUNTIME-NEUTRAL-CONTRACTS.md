@@ -4,7 +4,7 @@ Status: proposed
 
 ## Decision
 
-Do not fork DeepSeek Harness and do not make Cordis/dsh profiles the enterprise control-plane contract. Define language-neutral pack, capability, workflow, policy and event contracts owned by `enterprise-harness`. Validate them first through a dsh bundle/adapter and one headless runner. Existing agents may consume the same harness through MCP or APIs.
+Do not fork DeepSeek Harness and do not make Cordis/dsh profiles the enterprise control-plane contract. Define language-neutral pack, capability, workflow, policy and event contracts owned by `enterprise-harness`. Expose them through a centrally managed remote MCP/HTTPS service consumed by already-approved agents and automation clients. DeepSeek Harness remains research input only.
 
 ## Options considered
 
@@ -12,9 +12,8 @@ Do not fork DeepSeek Harness and do not make Cordis/dsh profiles the enterprise 
 2. **Enterprise dsh bundle only.** Reuses the UI, session loop, tools and telemetry with less drift, but makes Cordis configuration and dsh lifecycle the organization-wide platform contract.
 3. **Runtime-neutral contracts with adapters.** More contract design up front, but supports dsh, existing Copilot/Amp-style clients, CI and future runtimes without duplicating EIL or Observability.
 
-Choose option 3. Use option 2 as the first reference integration if phase 0 proves the dependency and corporate installation model acceptable.
+Choose option 3. Corporate installation restrictions reject options 1 and 2 and also reject a local dsh reference adapter.
 
 ## Consequences
 
-The organization avoids a premature runtime replacement and retains existing agent investments. The first pilot must build or adapt a small amount of orchestration plumbing rather than relying entirely on dsh internals. Conformance tests become essential so adapters do not diverge.
-
+The organization avoids a runtime replacement, retains existing approved agent investments and adds no corporate endpoint software. The managed service must provide orchestration, identity delegation and durable state itself rather than relying on dsh internals. Conformance tests become essential so approved-client adapters do not diverge.

@@ -7,6 +7,12 @@ created: 2026-08-15
 
 # Adoption, the Identity Ceiling, and Why This Is Three Products
 
+## Constraint update: corporate endpoint is zero-install
+
+The operator confirmed that DeepSeek Harness and other unapproved software cannot be installed on the corporate laptop. This supersedes the local corporate rollout described below. Rung 0 is now a development/test topology outside the restricted endpoint, not a deployable corporate product. The first corporate rung is the centrally hosted, read-only service and is blocked on authenticated remote client integration plus EIL per-user identity over HTTP MCP.
+
+DeepSeek Harness is no longer a possible reference host in the product path. It remains architecture research only. The distribution argument in this document still holds: already-approved runtimes are the clients; the harness is managed infrastructure behind them.
+
 `main` and `sonnet-draft` both conclude the harness should be runtime-neutral.
 I agree, and I want to argue it from a different direction, because the
 architectural argument ("do not fork a dev-preview 45-package monorepo") is the
@@ -48,11 +54,9 @@ choke point where env gating, argument validation, the ACL viewer and audit
 logging all live. The pattern is proven in this codebase, by this team, against
 these runtimes. Reusing it is the low-risk option, not the ambitious one.
 
-`deepseek-harness` then takes its proper place: **one reference host among
-several, adopted as a bundle if and when someone wants a full harness-native
-agent** — never the contract. Codex's ADR-003 and `REFERENCE_ASSESSMENT.md`
-reach the same place; this is the adoption reason to hold it there even if the
-architectural reason softens.
+`deepseek-harness` contributes architecture lessons only — never the contract,
+dependency, reference host or corporate endpoint. Codex's ADR-006 and ADR-010
+record the resulting deployment decision.
 
 ---
 
@@ -103,16 +107,16 @@ Three rungs. Each is independently useful, each has a distinct security model,
 and the gate between rungs 1 and 2 is §2's dependency. Nothing here requires
 choosing the final architecture in advance, which is the point.
 
-### Rung 0 — local, per-developer (deployable now)
+### Rung 0 — isolated development/test only
 
-Pack manifests in a git repo. Resolution and serving run in the developer's own
-stdio process against their own EIL. Identity ambient and therefore correct;
-zero new installs beyond what developers already run; no central service, no
-credentials, no infrastructure.
+Pack manifests in a git repo. Resolution and serving may run in an isolated
+non-corporate/test environment against a test EIL. This is useful for contract
+and measurement development but is not deployable to the restricted corporate
+laptop.
 
-*Gets you:* a real answer to "do packs help", from real work, at essentially no
-cost — the Phase 1 measurement in [MEASUREMENT.md](MEASUREMENT.md) runs
-entirely at this rung.
+*Gets you:* engineering feedback on contracts and the evaluation mechanism.
+The real corporate product test must run through an approved client against the
+managed service.
 *Does not get you:* shared curation, governance, tool packs, or any
 organisational effect. Every developer maintains their own corpus, which is
 exactly the duplicated-effort problem the product exists to solve.
@@ -145,12 +149,11 @@ packs are used and cited (the hit-rate and recall-loss thresholds in
 
 ### Where the no-installs constraint bites
 
-If the observability design's *"no arbitrary software installs"* constraint
-still binds — one of the two questions I put to the operator in the thread — the
-ladder does not change, but rung 2 stops being optional. Rungs 0 and 1 assume a
-developer can run a local Node process, which is already true wherever Copilot
-CLI and Amp CLI run today, so they survive. Anything requiring new endpoint
-infrastructure does not, and the design should carry no such requirement.
+The *"no arbitrary software installs"* constraint is confirmed. It removes the
+local corporate rungs rather than merely making the final rung mandatory. The
+managed read-only service is now the first corporate product, reached only
+through already-approved clients. Anything requiring new endpoint software is
+out of scope.
 
 The constraint rules out, as it did for observability: Kafka, Redis, a dedicated
 vector database, and any second datastore. The stack answer is therefore already

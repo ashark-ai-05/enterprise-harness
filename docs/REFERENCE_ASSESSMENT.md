@@ -36,10 +36,10 @@ Likewise, the harness should not absorb EIL. Knowledge ingestion and search have
 
 ## Build, extend or fork
 
-The recommendation is **runtime-neutral contracts, proven first with a dsh bundle/adapter**.
+The recommendation is **runtime-neutral contracts exposed as a managed enterprise service**.
 
 - Do not fork dsh: it is a large developer-preview codebase that explicitly expects compatibility-breaking changes.
 - Do not make dsh the enterprise contract: existing IDE agents, CI jobs and future runtimes should be able to use the same governed packs and workflows.
-- Do reuse dsh: its agent loop, session log, web/headless profiles, tool pipeline, sandbox and telemetry seams make it a strong reference host and a fast way to validate the product.
+- Reuse only dsh's architectural lessons: capability seams, durable event history, scoped tools and guarded execution. Corporate restrictions exclude its software and dependency tree from the product path.
 
-The phase-zero spike should answer whether corporate installation, dependency approval and proxy constraints permit a dsh-based reference client. A negative answer changes the adapter, not the pack/workflow/policy contracts.
+The installation question is settled: DeepSeek Harness cannot be installed on the corporate laptop. It is not a fork, dependency, bundle, adapter, reference client or fallback. Approved clients connect to the enterprise-hosted harness through managed remote MCP/HTTPS. This changes the deployment topology, not the pack/workflow/policy contracts.

@@ -4,15 +4,18 @@
 
 The harness sits between user intent and enterprise capabilities. It must coordinate long-running, resumable workflows while preserving EIL authorization and producing Observability evidence. It must not become a privileged bypass around either platform.
 
+Corporate endpoints cannot install unapproved runtimes. The architecture therefore assumes **zero new endpoint software**. Existing approved clients are presentation/control surfaces; all new harness code executes in approved enterprise infrastructure.
+
 ## Logical architecture
 
 ```mermaid
 flowchart TB
   subgraph Experience
-    CLI[CLI / IDE]
-    WEB[Web console]
-    API[Automation API]
+    CLI[Approved Copilot / Amp / IDE]
+    WEB[Approved browser / portal]
+    API[Approved automation client]
   end
+  EDGE[Enterprise access gateway<br/>OIDC/OAuth + remote MCP/HTTPS]
   subgraph Control_Plane[Harness control plane]
     GW[Identity + admission]
     PLAN[Planner + typed plan compiler]
@@ -34,9 +37,10 @@ flowchart TB
     REC[Authenticated receipt]
     LIN[Lineage + outcomes]
   end
-  CLI --> GW
-  WEB --> GW
-  API --> GW
+  CLI --> EDGE
+  WEB --> EDGE
+  API --> EDGE
+  EDGE --> GW
   GW --> PLAN --> POL --> RUN
   CAT --> PLAN
   RUN --> WK
@@ -50,6 +54,18 @@ flowchart TB
   WK --> REC
   REC --> LIN
 ```
+
+## Endpoint and access boundary
+
+The endpoint contains no harness runtime, local database, local EIL corpus, plugin engine, long-lived credential or sandbox. Approved-client configuration may contain only the managed service URL, public metadata and an enterprise authentication flow.
+
+The enterprise access gateway authenticates the human/workload through enterprise SSO, binds tenant/groups/device posture/purpose/session, terminates only approved remote MCP/HTTPS, and preserves the original principal in a signed audience-bound delegation token for EIL and tools. No client-supplied user header is trusted.
+
+The harness service identity authenticates the workload to EIL, but EIL authorization evaluates the delegated end-user principal and source ACL. If an approved client cannot perform the required enterprise auth and remote interface, that client remains unsupported until its vendor or the approved gateway supplies it. Do not install an ad-hoc endpoint shim.
+
+## Managed-service topology
+
+Deploy initially as one regional modular service with separately scalable roles: access/API and remote MCP facade; catalog and plan/policy admission; scheduler and durable run state; isolated read/model/tool workers; later sandbox workers; and a transactional Observability exporter. Use private network paths to EIL, model/tool gateways, PostgreSQL, object storage and Observability. Egress is deny-by-default and capability-specific.
 
 ## Runtime contract
 
@@ -125,19 +141,19 @@ Do not store EIL document bodies or duplicate Observability event facts in harne
 
 | Concern | Initial choice | Reason |
 |---|---|---|
-| Runtime/API | TypeScript on current enterprise Node LTS | aligns with EIL/Observability prototypes and MCP ecosystem; strong schema tooling |
+| Runtime/API | TypeScript on the enterprise-approved server Node LTS | aligns with EIL/Observability and MCP; no endpoint Node requirement |
 | Contracts | JSON Schema + generated TypeScript types | language-neutral, versionable, policy-friendly |
-| API | REST/JSON for control; SSE for live events | operationally simple; resumable UI streams |
-| Tool protocol | MCP behind a harness gateway | ecosystem interoperability without making MCP the policy boundary |
+| API | Remote MCP/HTTPS for approved clients; REST/JSON and SSE for managed portals/automation | zero-install reach with resumable server-side runs |
+| Tool protocol | MCP behind a server-side harness gateway | interoperability without endpoint plugins or making MCP the policy boundary |
 | Telemetry | OpenTelemetry + versioned harness semantic contract | vendor-neutral transport; domain-specific facts remain explicit |
 | State | PostgreSQL | transactions, leases, outbox, JSON, mature operations |
 | Artifacts | approved S3-compatible object store | immutable manifests and large evidence objects |
 | Policy | embedded policy adapter; evaluate OPA/Rego in phase 0 | avoid committing before enterprise policy ownership and latency are known |
-| Sandbox | provider interface over approved container/job platform | isolation and portability; local subprocess is development-only |
+| Sandbox | provider interface over approved container/job platform | isolation and portability; corporate endpoint execution is prohibited |
 | UI | thin web console consuming the same API | no alternate business logic |
 | Packaging | OCI artifacts plus signed manifests/SBOM | provenance, scanning and promotion |
 
-Python and other language tools run out of process behind contracts. Rust is appropriate only for measured hot paths or isolation helpers, not as an up-front architectural commitment.
+Python and other language tools run server-side out of process behind contracts. Rust is appropriate only for measured hot paths or isolation helpers, not as an up-front architectural commitment.
 
 ## EIL integration
 
@@ -166,14 +182,16 @@ Begin as a modular monolith with separately runnable API, scheduler and worker r
 
 Only split services where scaling, ownership, isolation or regulatory boundaries demand it. The first likely separations are sandbox execution and high-volume event export, not catalogs.
 
+Corporate laptops are never a worker pool. Long-running jobs survive client disconnects, and reconnecting clients resume from durable run state after reauthorization. There is no offline corporate mode: a content snapshot on the laptop would reintroduce installation, revocation, retention and exfiltration problems the central design avoids.
+
 ## Failure semantics
 
 - At-least-once delivery, idempotent step effects.
 - A step is never marked successful without its required evidence.
 - Unknown completion after timeout enters `reconcile_required`; do not blindly retry a mutation.
 - Revoked pack/capability versions stop new steps; in-flight policy decides cancel versus drain.
-- EIL unavailable: fail closed for required knowledge; do not use stale local context unless the pack explicitly permits a bounded snapshot.
-- Observability unavailable: durable local/outbox buffering within limits; stop consequential mutations if audit delivery exceeds policy threshold.
+- EIL unavailable: fail closed for required knowledge; do not use stale worker-cached context unless the pack explicitly permits a bounded server-side snapshot.
+- Observability unavailable: durable server-side outbox buffering within limits; stop consequential mutations if audit delivery exceeds policy threshold.
 
 ## Injection separation invariant
 
