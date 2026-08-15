@@ -103,12 +103,21 @@ Three rungs. Each is independently useful, each has a distinct security model,
 and the gate between rungs 1 and 2 is §2's dependency. Nothing here requires
 choosing the final architecture in advance, which is the point.
 
-### Rung 0 — local, per-developer (deployable now)
+### Rung 0 — local, per-developer (deployable once EIL is approved)
+
+> **Superseded in part, 2026-08-15.** This rung originally read "deployable now",
+> on the grounds that it needs "zero new installs beyond what developers already
+> run." That reasoning was wrong: Copilot CLI and Amp CLI are present because
+> those specific products were *approved*, not because Node processes are
+> permitted, and approval attaches to artifacts rather than runtimes. Rung 0 is
+> deployable exactly when EIL is approved on the target machine. See
+> [INSTALL_CONSTRAINT.md](INSTALL_CONSTRAINT.md), which also revises where the
+> pack plane should live.
 
 Pack manifests in a git repo. Resolution and serving run in the developer's own
-stdio process against their own EIL. Identity ambient and therefore correct;
-zero new installs beyond what developers already run; no central service, no
-credentials, no infrastructure.
+stdio process against their own EIL. Identity ambient and therefore correct; no
+central service, no credentials, no infrastructure — but not, as originally
+claimed, no approval.
 
 *Gets you:* a real answer to "do packs help", from real work, at essentially no
 cost — the Phase 1 measurement in [MEASUREMENT.md](MEASUREMENT.md) runs
