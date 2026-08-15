@@ -95,6 +95,14 @@ The build receipt records source cursors, resource digests, EIL index generation
 - Pack overlays may narrow but never broaden parent policy.
 - Cross-pack search de-duplicates by canonical resource/version while retaining all contributing pack IDs.
 
+## Resolution lock
+
+Resolving a knowledge pack produces a content-free lock containing ordered `(resource_id, content_digest, source_cursor)` entries, the selector/query provenance and the EIL index generation. The lock pins evidence identity, not bytes: it is a bibliography, not a library. Every fetch still traverses EIL with the current caller identity and current ACL.
+
+Query-shaped scopes are enumerated into a new lock for each resolution. The query explains how the set was selected; it is not itself a reproducibility pin because re-running it later can return a different corpus.
+
+Freshness and completeness reuse EIL's existing coverage contract. The harness may add `pack_view_partial` when the caller-visible view is narrower than the lock, but must not disclose hidden counts or create a parallel definition of source health. A partial view must never render as a complete negative answer.
+
 ## Freshness and revocation
 
 Reference packs can be reproducible and stale; live packs can be fresh and change over time. The manifest must declare which property it prioritizes. Runs pin the resolved pack digest and EIL index generation so results remain explainable.
@@ -113,8 +121,7 @@ Revocation blocks new resolutions immediately. Previously fetched content follow
 
 ## Open questions for phase 0
 
-1. Should live scopes pin every resource ID or pin the query plus EIL index generation?
-2. Which existing enterprise artifact registry should store manifests and signatures?
-3. What is the maximum acceptable time between source ACL revocation and EIL enforcement?
-4. Which pack fields are centrally governed versus domain-owner configurable?
-5. Are encrypted offline snapshots required in the first year?
+1. Which existing enterprise artifact registry should store manifests and signatures?
+2. What EIL revocation-enforcement SLO is required? A content-free harness lock must add no cache delay of its own.
+3. Which pack fields are centrally governed versus domain-owner configurable?
+4. Are encrypted offline snapshots required in the first year?

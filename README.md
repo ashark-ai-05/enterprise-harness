@@ -60,6 +60,9 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 - [Product and organizational model](docs/PRODUCT.md)
 - [Architecture and technology choices](docs/ARCHITECTURE.md)
 - [Pack specification](docs/PACK_SPEC.md)
+- [Pack resolution, partial views and freshness](docs/PACK_RESOLUTION.md)
+- [Pack-value measurement](docs/MEASUREMENT.md)
+- [Adoption, identity ceiling and product decomposition](docs/ADOPTION_AND_DECOMPOSITION.md)
 - [Security and governance](docs/SECURITY_AND_GOVERNANCE.md)
 - [Delivery plan and decision gates](docs/DELIVERY_PLAN.md)
 - [DeepSeek Harness comparison](docs/REFERENCE_ASSESSMENT.md)
@@ -70,6 +73,8 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 Start with one bounded, read-heavy workflow: **Jira change request → approved Confluence and code packs → cited change plan → acceptance criteria → human approval → sandboxed patch/test → evidence bundle**.
 
 The pilot should use one model route, one source-control provider, read-only Jira/Confluence access, and a disposable code sandbox. Mutations remain approval-gated. Do not begin implementation until the decisions in [Delivery plan](docs/DELIVERY_PLAN.md) are approved.
+
+The pilot begins locally against each developer's own EIL process. Shared/team deployment is blocked until EIL provides tested per-user identity over HTTP MCP; the harness must not centralize behind a privileged EIL service credential.
 
 ## Explicit non-goals
 

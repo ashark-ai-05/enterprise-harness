@@ -62,6 +62,8 @@ flowchart TB
 7. Verify outputs using deterministic validators or external systems of record.
 8. Checkpoint the run and publish a result/evidence manifest.
 
+For knowledge retrieval, the resolved lock contains identities and digests only. `view(pack, caller) = lock(pack) ∩ readable(caller, at read time)`. No view or authorization result is cached across principals.
+
 ## Plugin model
 
 Adopt DeepSeek Harness's composability idea, not unrestricted in-process plugins.
@@ -172,3 +174,7 @@ Only split services where scaling, ownership, isolation or regulatory boundaries
 - Revoked pack/capability versions stop new steps; in-flight policy decides cancel versus drain.
 - EIL unavailable: fail closed for required knowledge; do not use stale local context unless the pack explicitly permits a bounded snapshot.
 - Observability unavailable: durable local/outbox buffering within limits; stop consequential mutations if audit delivery exceeds policy threshold.
+
+## Injection separation invariant
+
+Tool grants are a pure function of the signed manifest, caller, policy and approval state. Retrieved content, model output and tool output cannot participate in computing authority. A step containing broadly writable sources such as Jira comments or Confluence pages must not simultaneously hold a high-risk mutation capability; split reading and acting across an approval boundary.

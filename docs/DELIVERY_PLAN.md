@@ -14,14 +14,20 @@ Time-box a design validation using existing EIL and Observability demonstrations
 - Measure expected concurrency, run duration, artifact size, retrieval volume and telemetry volume.
 - Threat-model prompt injection, plugins and mutations.
 - Run a laptop-scale falsification trial: compare scoped knowledge packs with direct whole-corpus EIL on retrieval precision, context size and setup time. Do not build a registry unless the pack abstraction earns its complexity.
+- Read and test EIL's actual coverage/freshness contracts (`coverage`, source health, evidence bounds) before specifying harness equivalents. Extend those contracts; do not create a second definition of completeness or staleness.
+- Validate target clients can propagate the real caller identity through MCP. Record EIL per-user token and HTTP MCP delivery as a hard dependency for any shared index.
 
 **Gate:** scoped packs demonstrate measurable value; approve the product boundary, pack semantics, ownership, pilot workflow, risk controls and success metrics.
 
-## Phase 1 — read-only walking skeleton
+## Phase 1 — local read-only walking skeleton plus measurement
 
-Only after approval: one user intent, one manifest-only pack, EIL search/fetch, one model route, typed read-only tools, durable run state and Observability events. No source mutations.
+Only after approval: one user intent, one manifest-only pack, EIL search/fetch, one model route, typed read-only tools, durable run state and Observability events. No source mutations. Ship the counterfactual measurement at the same time: a sampled shadow whole-corpus retrieval arm plus a small run-level outcome holdout. This control cannot be reconstructed after packs become the default.
 
-**Gate:** zero ACL escapes; complete citations; deterministic replay of plan/evidence; policy and telemetry coverage demonstrated.
+**Gate:** zero ACL escapes; complete citations; deterministic replay of plan/evidence; policy and telemetry coverage demonstrated; scoped-pack hit rate and recall loss meet agreed thresholds.
+
+## Shared-service prerequisite
+
+Rung 0 can run locally because EIL and its connectors execute as one developer identity. A team-shared index changes that boundary. Do not deploy a shared harness/EIL service until EIL's per-user tokens and HTTP MCP transport are implemented and adversarially verified. This is a dependency on EIL's roadmap, not a harness feature that can be approximated with local ACL filters.
 
 ## Phase 2 — sandboxed work
 
@@ -61,6 +67,7 @@ Add promotion workflows, tenant quotas, domain ownership, conformance suite, SLO
 7. Approve the metadata/content capture manifest and retention.
 8. Set autonomy tiers and identify the first permitted mutation, if any.
 9. Agree SLOs, quotas, budget limits and pilot success thresholds.
+10. Confirm the EIL per-user HTTP identity milestone and name its owner/date before planning any shared-index phase.
 
 ## Work explicitly excluded until approval
 
