@@ -22,15 +22,17 @@ Time-box a design validation using existing EIL and Observability demonstrations
 
 **Gate:** scoped packs demonstrate measurable value; approve the product boundary, pack semantics, ownership, pilot workflow, risk controls and success metrics.
 
-## Phase 1 — centrally hosted read-only walking skeleton plus measurement
+**Pre-gate architecture fork:** if EIL's current local execution and proposed extension are formally approved, run the read-only falsification trial as Architecture A behind EIL's existing stdio tool boundary. If not, use Architecture B and wait for the remote identity prerequisites. Do not fund both walking skeletons. See `DEPLOYMENT_OPTIONS.md`.
 
-Only after approval and the identity prerequisite: one approved client, one remote MCP/HTTPS endpoint, one user intent, one manifest-only pack, EIL search/fetch, one model route, typed read-only tools, durable server-side run state and Observability events. No endpoint runtime and no source mutations. Ship the counterfactual measurement at the same time: a sampled shadow whole-corpus retrieval arm plus a small run-level outcome holdout. This control cannot be reconstructed after packs become the default.
+## Phase 1 — read-only walking skeleton plus measurement
+
+Only after the architecture fork is resolved: one approved client, one user intent, one manifest-only knowledge pack, EIL search/fetch and Observability events. Architecture A uses the approved local EIL stdio boundary; Architecture B uses authenticated remote MCP/HTTPS and durable server-side run state. No source mutations. Ship the counterfactual measurement at the same time: a sampled shadow whole-corpus retrieval arm plus a small run-level outcome holdout. This control cannot be reconstructed after packs become the default.
 
 **Gate:** zero ACL escapes; complete citations; deterministic replay of plan/evidence; policy and telemetry coverage demonstrated; scoped-pack hit rate and recall loss meet agreed thresholds.
 
 ## Shared-service prerequisite
 
-The earlier local rung is not viable on restricted corporate laptops. Do not deploy the centrally hosted pilot until EIL's per-user tokens and HTTP MCP transport are implemented and adversarially verified. This is a dependency on EIL's roadmap, not a harness feature that can be approximated with local ACL filters or endpoint shims.
+Architecture A is viable only under explicit approval and does not scale beyond its local single-principal boundary. Architecture B must not deploy until EIL's per-user tokens and HTTP MCP transport are implemented and adversarially verified. This is a dependency on EIL's roadmap, not a harness feature that can be approximated with local ACL filters or endpoint shims.
 
 ## Phase 2 — sandboxed work
 

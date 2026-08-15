@@ -4,7 +4,7 @@
 
 The harness sits between user intent and enterprise capabilities. It must coordinate long-running, resumable workflows while preserving EIL authorization and producing Observability evidence. It must not become a privileged bypass around either platform.
 
-Corporate endpoints cannot install unapproved runtimes. The architecture therefore defaults to **zero new endpoint software**. Existing approved clients are presentation/control surfaces; all authoritative harness code executes in approved enterprise infrastructure. A reviewed stdio transport adapter is optional only if corporate approval explicitly permits the same installation shape as EIL.
+Corporate endpoints cannot install unapproved runtimes. The enterprise target therefore uses approved clients with authoritative harness services on approved infrastructure. The first read-only pilot has two mutually exclusive deployment options pending one approval fact: an EIL-local extension if that exact model is formally approved, or the managed remote topology below. See `DEPLOYMENT_OPTIONS.md`. A local pilot never becomes the enterprise policy or execution plane.
 
 ## Logical architecture
 

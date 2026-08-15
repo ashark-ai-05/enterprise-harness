@@ -63,6 +63,7 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 - [Pack resolution, partial views and freshness](docs/PACK_RESOLUTION.md)
 - [Pack-value measurement](docs/MEASUREMENT.md)
 - [Adoption, identity ceiling and product decomposition](docs/ADOPTION_AND_DECOMPOSITION.md)
+- [Deployment options pending approval evidence](docs/DEPLOYMENT_OPTIONS.md)
 - [Security and governance](docs/SECURITY_AND_GOVERNANCE.md)
 - [Delivery plan and decision gates](docs/DELIVERY_PLAN.md)
 - [DeepSeek Harness comparison](docs/REFERENCE_ASSESSMENT.md)
@@ -72,7 +73,7 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 
 The corporate laptop cannot install DeepSeek Harness because it is unapproved software. DeepSeek Harness is therefore architecture research only: not a dependency, fork, bundle, adapter, reference client or fallback. Do not generalize this evidence into an unsupported claim that every new endpoint artifact is prohibited; confirm the applicable approval policy in Phase 0.
 
-The recommended corporate shape is a centrally managed service exposed through enterprise-authenticated remote MCP/HTTPS. Developers keep using already-approved Copilot, Amp or IDE clients. EIL access, policy, credentials, models, tools, run state, sandboxing and telemetry execute on approved infrastructure. A minimal reviewed stdio adapter is allowed only if the exact EIL-style local installation path is separately confirmed approved; it cannot contain policy, credentials, corpus data or execution authority.
+The enterprise target is a centrally managed service, but the first pilot architecture is deliberately unresolved. If EIL's exact local source/lockfile/stdio execution and extension model are formally approved on the same laptop, a narrow knowledge-pack resolver can fold into EIL's existing `REGISTRY`/`callTool()` boundary and run the falsification trial without waiting for shared HTTP identity. Otherwise the pilot is remote-only and blocked on EIL per-user identity over HTTP MCP. See [Deployment options](docs/DEPLOYMENT_OPTIONS.md).
 
 ## Recommended pilot
 
@@ -80,7 +81,7 @@ Start with one bounded, read-heavy workflow through an already-approved client: 
 
 The pilot should use one model route, one source-control provider, read-only Jira/Confluence access, and a disposable code sandbox. Mutations remain approval-gated. Do not begin implementation until the decisions in [Delivery plan](docs/DELIVERY_PLAN.md) are approved.
 
-The corporate pilot is remote-service-only and is blocked until EIL provides tested per-user identity over HTTP MCP. The harness must not centralize behind a privileged EIL service credential. Development may use isolated test environments, but local developer topology is not a corporate product deployment rung.
+The pilot topology is selected by the approval gate above. Architecture A is local, read-only and knowledge-pack-only; Architecture B is remote-service-only and blocked until EIL provides tested per-user identity over HTTP MCP. Neither may centralize behind a privileged EIL service credential.
 
 ## Explicit non-goals
 
