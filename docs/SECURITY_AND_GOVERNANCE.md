@@ -20,6 +20,8 @@ Models never receive raw credentials. Workers receive short-lived, audience-boun
 - Separate permissions for pack publication, workflow publication, execution, approval, sensitive reveal and administration.
 - Four-eyes approval for production mutations, policy changes and high-risk capability promotion.
 - Emergency access is time-bound, reasoned, separately alerted and audited.
+- Real caller/workload identity propagates through the harness to EIL. Shared privileged EIL credentials plus harness-side filtering are prohibited.
+- A knowledge pack can only narrow the resources EIL would return to that identity; it can never grant access.
 
 ## Prompt-injection containment
 
@@ -78,4 +80,3 @@ Before a pilot:
 - observability capture manifest reviewed with employee/privacy stakeholders;
 - incident response and kill-switch exercise completed;
 - no production mutation capability enabled.
-

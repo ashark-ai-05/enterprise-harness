@@ -13,8 +13,9 @@ Time-box a design validation using existing EIL and Observability demonstrations
 - Validate approved Node, Postgres, object store, sandbox, registry, policy and model gateway choices.
 - Measure expected concurrency, run duration, artifact size, retrieval volume and telemetry volume.
 - Threat-model prompt injection, plugins and mutations.
+- Run a laptop-scale falsification trial: compare scoped knowledge packs with direct whole-corpus EIL on retrieval precision, context size and setup time. Do not build a registry unless the pack abstraction earns its complexity.
 
-**Gate:** approve the product boundary, pack semantics, ownership, pilot workflow, risk controls and success metrics.
+**Gate:** scoped packs demonstrate measurable value; approve the product boundary, pack semantics, ownership, pilot workflow, risk controls and success metrics.
 
 ## Phase 1 — read-only walking skeleton
 
@@ -69,4 +70,3 @@ Add promotion workflows, tenant quotas, domain ownership, conformance suite, SLO
 - plugin installation or registry publication;
 - EIL/Observability schema changes;
 - autonomous mutation behavior.
-

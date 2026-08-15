@@ -6,4 +6,5 @@
 - [ADR-004: Typed resumable workflow graph](004-TYPED-WORKFLOW-GRAPH.md)
 - [ADR-005: PostgreSQL-first modular monolith](005-POSTGRES-MODULAR-MONOLITH.md)
 - [ADR-006: Runtime-neutral core contracts](006-RUNTIME-NEUTRAL-CONTRACTS.md)
+- [ADR-007: Separate knowledge and tool packs](007-SEPARATE-KNOWLEDGE-AND-TOOL-PACKS.md)
 

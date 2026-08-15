@@ -87,6 +87,15 @@ Do not promise arbitrary agent swarms. Most enterprise work benefits more from d
 | ROI becomes employee scoring | trust and governance failure | outcome/team cohorts; prohibit individual rankings |
 | Pack publication implies permanent access | revoked users retain data | runtime authorization and short-lived retrieval grants |
 
+## Falsification conditions
+
+Stop or change direction when evidence invalidates the product premise:
+
+- If a laptop-scale trial shows scoped knowledge packs do not improve retrieval precision, context efficiency or session setup over direct whole-corpus EIL access, do not build a registry.
+- If real usage produces only knowledge packs and teams do not adopt governed tool packs, move saved/scoped pack views into EIL and retire the separate harness rather than preserving a thin coordination layer.
+- If real caller identity cannot propagate through target clients and MCP to EIL, block shared-service rollout; do not compensate with a privileged service credential and harness-side ACLs.
+- If corporate proxy or approved-install constraints exclude the dependency model, change the reference adapter rather than weakening the runtime-neutral contracts.
+
 ## Success measures
 
 - time from intent to first cited, useful artifact;
@@ -98,4 +107,3 @@ Do not promise arbitrary agent swarms. Most enterprise work benefits more from d
 - pack reuse, staleness and rollback rate;
 - platform availability and queue latency;
 - user-reported trust and usefulness without surveillance concerns.
-

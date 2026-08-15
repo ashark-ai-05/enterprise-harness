@@ -150,6 +150,8 @@ Required EIL interfaces:
 
 Search remains deterministic and LLM-free. The harness chooses when to retrieve and how to use results; it does not re-rank around EIL ACL enforcement. Returned context records the pack, query, result/resource versions and authorization decision.
 
+The harness must propagate the calling user/workload identity end-to-end. It must never proxy all users through an EIL service identity whose broader access is then narrowed only by harness filters. That design would turn the harness into a confused deputy and replace EIL's fail-closed boundary with application logic that can fail open.
+
 ## Observability integration
 
 Emit metadata-first canonical events for run, plan, step, model call, tool call, retrieval, approval, artifact, policy decision, error and outcome link. Every event carries tenant, run/trace/span IDs, producer/schema versions, observed/received time, idempotency key, capture policy, resource/capability digests and attribution evidence.
@@ -170,4 +172,3 @@ Only split services where scaling, ownership, isolation or regulatory boundaries
 - Revoked pack/capability versions stop new steps; in-flight policy decides cancel versus drain.
 - EIL unavailable: fail closed for required knowledge; do not use stale local context unless the pack explicitly permits a bounded snapshot.
 - Observability unavailable: durable local/outbox buffering within limits; stop consequential mutations if audit delivery exceeds policy threshold.
-

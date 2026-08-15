@@ -29,7 +29,12 @@ flowchart LR
 
 ## The pack model
 
-An **Enterprise Information Pack (EIP)** is a signed, versioned manifest that selects governed EIL resources for a purpose. It is not a ZIP of copied enterprise data and not an independent vector index.
+`Pack` is a tagged union, never a flat plugin list:
+
+- A **knowledge pack** is a signed, versioned manifest that selects governed EIL resources for a purpose. It is searched and fetched. It is not a ZIP of copied enterprise data and not an independent vector index.
+- A **tool pack** selects MCP/tool capabilities. It is invoked and may cause side effects, so it follows separate trust, approval and credential paths.
+
+Conflating the two is a security defect: EIL can fail closed per document, while a side effect cannot be undone by filtering its result.
 
 A pack contains:
 
@@ -39,7 +44,7 @@ A pack contains:
 - authorization requirements, policy labels and dependency locks;
 - signatures, provenance and a reproducible build receipt.
 
-The EIL remains the source of truth. At runtime the harness resolves a pack against the caller, rechecks access, freshness and policy, then requests cited snippets or full resources from EIL. Portable offline snapshots are a separate, explicitly exported pack profile with encrypted content, bounded TTL and revocation limitations.
+The EIL remains the source of truth. A knowledge pack is a filter, never a grant. At runtime the harness resolves it against the real caller identity, rechecks access, freshness and policy, then requests cited snippets or full resources from EIL. Portable offline snapshots are a separate, explicitly exported pack profile with encrypted content, bounded TTL and revocation limitations.
 
 ## Product surfaces
 
@@ -82,4 +87,3 @@ The pilot should use one model route, one source-control provider, read-only Jir
 - [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and its [architecture](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md)
 - [Enterprise Intelligence Layer](https://github.com/ashark-ai-05/enterprise-intelligence-layer)
 - Local observability baseline: `../enterprise-ai-effectiveness-observatory/README.md`
-

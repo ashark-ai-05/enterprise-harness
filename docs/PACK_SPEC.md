@@ -1,14 +1,30 @@
-# Enterprise Information Pack Specification
+# Pack Specification
+
+## Pack algebra
+
+`Pack = KnowledgePack | ToolPack`. The discriminator is mandatory and the two variants do not share an authorization path.
+
+| Property | Knowledge pack | Tool pack |
+|---|---|---|
+| Backing system | EIL resources/scopes | MCP or harness capability registry |
+| Operation | search/fetch | invoke |
+| Core safety property | filter, never grant | explicit capability authorization |
+| Composition | liberal within caller ACL and policy | restricted by trust tier and approval |
+| Typical failure | stale/missing/irrelevant context | unauthorized or irreversible side effect |
+
+The manifest-first decision below describes knowledge packs. Tool packs contain signed capability references, declared side effects, credential audience, network/data requirements, approval policy and conformance evidence. A workflow may depend on both variants but cannot coerce one into the other.
 
 ## Decision
 
-A pack is a **governed, reproducible selection and usage contract over EIL resources**. It is not the EIL ingestion format and normally contains no copied source bodies.
+A knowledge pack is a **governed, reproducible selection and usage contract over EIL resources**. It is not the EIL ingestion format and normally contains no copied source bodies.
 
 This separates three concepts:
 
 1. **Source ingestion** — EIL connector turns Jira, Confluence, Git or documents into normalized resources and indexes.
 2. **Pack build** — publisher selects resource/query rules, pins versions and policies, runs validation, and signs a manifest.
-3. **Pack resolution** — harness asks EIL to resolve the manifest for the current principal and purpose, then searches/fetches within the resulting scope.
+3. **Pack resolution** — harness propagates the real caller identity to EIL, resolves the manifest for that principal and purpose, then searches/fetches within the resulting scope.
+
+**Invariant: a knowledge pack is a filter, never a grant.** Publication, membership or workflow selection cannot expose a resource the current principal could not retrieve directly through EIL. Harness policy can narrow EIL authority but cannot broaden it.
 
 ## Pack types
 
@@ -102,4 +118,3 @@ Revocation blocks new resolutions immediately. Previously fetched content follow
 3. What is the maximum acceptable time between source ACL revocation and EIL enforcement?
 4. Which pack fields are centrally governed versus domain-owner configurable?
 5. Are encrypted offline snapshots required in the first year?
-
