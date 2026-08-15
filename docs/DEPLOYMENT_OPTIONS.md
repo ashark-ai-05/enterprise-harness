@@ -45,5 +45,4 @@ Risks: larger infrastructure/procurement scope, service operations before produc
 
 ## Decision rule
 
-Choose A only from explicit approval evidence, never from the observation that EIL has run somewhere. Otherwise choose B. Do not build both pilots. If A proves pack value, its contracts and measurements feed B later without making the local process the enterprise control plane.
-
+Default to A for the read-only pilot because first-party in-house development has a path and EIL appears acceptable. Obtain lightweight confirmation of the exact EIL change/launch shape in parallel; it is cheap risk reduction, not a reason to build B first. Escalate to B if the local path is rejected, if multi-user sharing is required, or after P1 proves value. Do not build both pilots. If A proves pack value, its contracts and measurements feed B later without making the local process the enterprise control plane.

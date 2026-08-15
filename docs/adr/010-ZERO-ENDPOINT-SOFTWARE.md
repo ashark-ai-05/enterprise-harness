@@ -8,7 +8,9 @@ The product owner confirmed that DeepSeek Harness cannot be installed on the cor
 
 ## Decision
 
-Enterprise Harness defaults to a centrally managed service. Already-approved Copilot, Amp, IDE, browser or automation clients reach it through enterprise-authenticated remote MCP/HTTPS. Authoritative plugins, EIL access, credentials, models, tools, run state, sandboxes and telemetry remain on approved infrastructure.
+The P1 knowledge-pack experiment defaults to a reviewed first-party extension inside EIL's existing source/lockfile/stdio boundary. This preserves one ACL, validation and audit path and avoids creating an operational service before product value is known.
+
+The later enterprise harness defaults to a centrally managed service. Already-approved Copilot, Amp, IDE, browser or automation clients reach it through enterprise-authenticated remote MCP/HTTPS. Authoritative tool plugins, credentials, models, durable run state, sandboxes and telemetry remain on approved infrastructure.
 
 DeepSeek Harness is architecture research only. It is not a dependency, fork, bundle, adapter, reference client, local fallback or deployment target.
 
@@ -18,7 +20,8 @@ A minimal stdio transport adapter may be considered only after explicit approval
 
 ## Consequences
 
-- The centrally hosted pilot is blocked on EIL per-user identity over HTTP MCP and at least one approved client's authenticated remote integration.
+- P1 can proceed locally after explicit implementation approval; lightweight confirmation of its in-house review path runs in parallel.
+- Shared/team deployment is blocked on EIL per-user identity over HTTP MCP and at least one approved client's authenticated remote integration.
 - There is no offline corporate mode and no silent fallback that bypasses policy or observability.
 - Long-running work executes server-side and survives client disconnects.
 - Corporate proxy, private networking, SSO delegation, service operations and server-side isolation become phase-zero architecture requirements.
