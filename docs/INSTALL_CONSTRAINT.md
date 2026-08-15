@@ -18,6 +18,90 @@ is allowed.
 
 ---
 
+## 0. Update, 2026-08-15 13:32 — and a correction to §1–2 below
+
+The operator has since clarified: *"I can create software inhouse. EIL seems to
+be okay."*
+
+**That narrows the constraint, and my generalisation of it was wrong.** I wrote
+"approval attaches to artifacts, not runtimes" and extended the block to any
+endpoint artifact we might ship. The real boundary is **provenance, not
+artifact-hood**: unapproved *third-party* software is blocked; *first-party*
+in-house code has a path. I over-rotated from a single data point into a
+universal rule, and §1–2 are corrected accordingly rather than deleted, so the
+reasoning stays inspectable.
+
+This also explains EIL more robustly than "EIL got approved" does. **EIL is
+first-party.** It was never in the blocked category, which is why it runs. That
+is a stronger footing than an approval decision, because it does not depend on a
+decision anyone has to remember or renew.
+
+### What this does to the decisions on `main`
+
+- **ADR-010's default should flip.** It currently defaults to the centrally
+  managed service and treats a local EIL extension as the exception requiring
+  special evidence. If in-house code is permitted, **Architecture A is the
+  default and B is the escalation.** The decision rule in
+  `DEPLOYMENT_OPTIONS.md` — *"choose A only from explicit approval evidence,
+  otherwise B"* — was correct under the old reading and is now inverted by the
+  evidence.
+- **dsh does not reopen.** "I can build in-house" is not "third-party software
+  is approvable." Vendoring it would make us the maintainer of a 45-package
+  developer-preview monorepo that advertises breaking changes — acquiring the
+  maintenance burden without acquiring the approval. It stays research.
+- **My rung-0 correction partly reverts, and I would rather say so than leave
+  it tidy.** §1 below withdraws the claim that rung 0 was "deployable now". On
+  this evidence the *claim* was roughly right after all — but the *reasoning*
+  was still wrong. Rung 0 is deployable because first-party code is permitted,
+  not because "a local Node process is free since Copilot CLI already runs."
+  Right answer, wrong derivation, and the derivation is what would have
+  generalised badly.
+- **The residual risk is the word "seems".** "EIL seems to be okay" is an
+  informal read, not written approval. It matters only for how far this scales:
+  a first-party read-only extension inherits whatever standing EIL has, but if
+  EIL is tolerated rather than sanctioned, that standing gets tested the first
+  time it is visible to IT. That is a reason to keep P1 narrow, not a reason to
+  choose B.
+
+### §3's conclusion survives — but for a different reason
+
+I argued P1 belongs inside EIL because it costs zero incremental approval
+surface. **That argument is now much weaker.** If in-house software is generally
+permitted, a separate in-house harness binary is also permitted, so approval
+surface no longer decides it.
+
+The conclusion holds anyway, on a better argument I under-weighted:
+
+> A separate harness process that reaches the corpus must either re-implement
+> retrieval or proxy EIL. Proxying is exactly where identity flattens, and
+> re-implementing means **two ACL enforcement paths** where EIL currently has
+> one. `callTool()` is the single choke point carrying env gating, validation,
+> the ACL viewer and audit. Registering pack tools behind it keeps one
+> enforcement path; standing up a second process creates the confused-deputy
+> shape Sonnet identified.
+
+That is a security argument rather than a procurement one, and unlike the
+approval argument it does not move when policy does. The right conclusion was
+reached for a partly wrong reason, which is worth recording explicitly.
+
+### The constraint that actually binds now
+
+With approval no longer the ceiling, the binding constraint is not compute,
+security or scale. It is **maintenance capacity.**
+
+The design across three drafts now contains: an authenticating gateway, a
+control plane, a catalog, a policy engine, a scheduler, isolated workers,
+sandboxes, object storage, a registry and a promotion workflow — on top of EIL
+and the observability layer, which already exist and already need maintaining.
+
+If the answer to "who operates this" is one person, then Architecture B is a
+team's worth of permanent operational load incurred *before* any evidence that
+packs help. That argues for A-first independently of every other argument in
+this document, and it is the question I would most want answered before P2 is
+planned in any more detail.
+
+---
+
 ## 1. The constraint applies to us, not just to dsh
 
 If unapproved software cannot be installed, then the rule does not stop at
@@ -63,12 +147,13 @@ better design, because approval has a lead time measured in months and a
 non-trivial failure rate, while engineering elegance has neither.
 
 This gives a design invariant that deserves the same weight as "a pack is a
-filter, never a grant":
+filter, never a grant" — stated below in its **corrected** form (see §0; my
+first version was too broad):
 
-> **The zero-endpoint-install invariant.** No element of this design may require
-> a developer to install software that is not already approved. Anything that
-> cannot meet that bar ships server-side, rides inside an already-approved
-> artifact, or does not ship.
+> **The unapproved-third-party invariant.** No element of this design may
+> require a developer to run *third-party* software that is not already
+> approved. First-party in-house code is permitted, subject to whatever the
+> in-house review path requires — which is a cost to be minimised, not a wall.
 
 ---
 

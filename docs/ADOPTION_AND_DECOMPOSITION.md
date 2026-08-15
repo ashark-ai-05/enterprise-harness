@@ -103,16 +103,19 @@ Three rungs. Each is independently useful, each has a distinct security model,
 and the gate between rungs 1 and 2 is §2's dependency. Nothing here requires
 choosing the final architecture in advance, which is the point.
 
-### Rung 0 — local, per-developer (deployable once EIL is approved)
+### Rung 0 — local, per-developer (deployable, on current evidence)
 
-> **Superseded in part, 2026-08-15.** This rung originally read "deployable now",
-> on the grounds that it needs "zero new installs beyond what developers already
-> run." That reasoning was wrong: Copilot CLI and Amp CLI are present because
-> those specific products were *approved*, not because Node processes are
-> permitted, and approval attaches to artifacts rather than runtimes. Rung 0 is
-> deployable exactly when EIL is approved on the target machine. See
-> [INSTALL_CONSTRAINT.md](INSTALL_CONSTRAINT.md), which also revises where the
-> pack plane should live.
+> **Amended twice on 2026-08-15; read the second amendment.** This rung
+> originally read "deployable now" because it needs "zero new installs beyond
+> what developers already run." When dsh was blocked I withdrew that, reasoning
+> that approval attaches to artifacts rather than runtimes. The operator then
+> clarified that **in-house software is permitted and EIL is fine**, which makes
+> the original claim roughly correct and my withdrawal an over-correction.
+>
+> The reasoning was wrong both times, and that is the part worth keeping: rung 0
+> is deployable because **first-party code is permitted**, not because a local
+> Node process is free, and not because Copilot CLI's presence implies anything.
+> See [INSTALL_CONSTRAINT.md](INSTALL_CONSTRAINT.md) §0.
 
 Pack manifests in a git repo. Resolution and serving run in the developer's own
 stdio process against their own EIL. Identity ambient and therefore correct; no
