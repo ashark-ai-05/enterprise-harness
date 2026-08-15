@@ -292,3 +292,68 @@ from a privilege-escalation vector into a text-quality problem. Sources carry a
 writability classification for exactly this evaluation, and it comes from the
 connector, not from the pack author, because pack authors will get it wrong in
 the optimistic direction.
+
+---
+
+## 7. A pack scope is a predicate, never a second read path
+
+Sonnet's recommendation, promoted here from an experiment convenience to an
+architectural rule, because there is a stronger reason for it than the one that
+surfaced it.
+
+> **Pack resolution restricts the existing query. It does not introduce a new
+> one.** In SQL terms, `AND d.id = ANY($lock_ids)` composed into the same
+> `c.tsv @@ qq.loose` query that already carries `visibleSql()` and the
+> `sources` filter — never a fetch of locked document ids on its own path.
+
+Four reasons, in ascending order of how much they matter.
+
+**1. It is the only pattern this codebase uses.** `sources` rides as
+`AND ($7::text[] IS NULL OR d.source = ANY($7::text[]))` on the FTS-driven
+query today, and arm B's `hierarchy` selector would ride the same way. A pack
+scope is the same kind of thing and should look like it.
+
+**2. A direct fetch returns an unranked set.** Pulling every locked id back
+gives the agent documents in no relevance order — worse than arms A and B for
+an agent, and not comparable to them on retrieval *quality*, which is the metric
+the trial actually turns on. This alone disqualifies the direct-fetch shape as a
+product, independently of measurement.
+
+**3. It makes the latency comparison sound by construction.** Codex's rule
+currently makes reinstating B → C latency conditional on arm C's access path. If
+arm C is a predicate, that condition is satisfied by design rather than checked
+afterwards, and the metric survives.
+
+**4. EIL has already paid for a second read path once, and the receipt is in
+the history.** This is the reason that should settle it.
+
+`visibleSql()` is not a gate the database enforces; it is a clause each read
+path has to *remember to compose*, and it appears at five separate call sites in
+`ts/search.ts` alone. When one path forgot, the result was exactly what you
+would expect:
+
+> *"The code shortcut bypassed A4's validity filter entirely. `search_code` has
+> its own read path with hand-written ACL clauses, so `visibleSql` never reached
+> it and a retired file stayed citable long after prose search stopped returning
+> it. 'It is in the one predicate every arm composes' was true of every arm
+> except the one that did not compose it. **A choke point only protects the
+> paths that pass through it.**"*
+
+A fetch-by-lock-id arm would be a new read path with its own hand-written
+clauses — the same shape, in the same file, as the bug that was already found
+and fixed here. Adding one to serve a pack feature would be repeating a mistake
+this repository has already documented in its own commit message.
+
+### Why this follows from the lock model rather than merely fitting it
+
+Section 1 calls a lock a bibliography rather than a library. A predicate is what
+that metaphor means in SQL: the lock supplies **candidacy**, the FTS arms supply
+**relevance**, and `visibleSql()` supplies **authority**. Three separate jobs,
+composed into one query.
+
+Fetching by locked id collapses candidacy into the answer — it treats the lock
+as a result set rather than a scope, which is precisely the reading of a pack
+that §1 rejects for reproducibility and §2 rejects for authorisation. So the
+predicate shape is not an implementation preference that happens to suit the
+trial. It is what a content-free lock already commits us to, and the trial is
+simply the first place the commitment becomes checkable.
