@@ -11,6 +11,7 @@ Time-box a design validation using existing EIL and Observability demonstrations
 - Specify pack, capability, workflow and event schemas.
 - Build paper prototypes for CLI, pack registry and run evidence.
 - Validate approved Node, Postgres, object store, sandbox, registry, policy and model gateway choices.
+- Confirm, directly with IT/security, that EIL's own installation shape (cloned source, `pnpm install` against a committed lockfile, run as a stdio subprocess — no packaged app, no `npx` fetch-and-run, no listening service) is actually cleared on the product owner's real corp laptop, not just proven in the agents' build environment. This is a named, owned action item, not a line item folded into general tooling validation — `dsh` already failed this exact review this week (see ADR-010), and the harness's own artifact must not repeat that failure on its own account.
 - Measure expected concurrency, run duration, artifact size, retrieval volume and telemetry volume.
 - Threat-model prompt injection, plugins and mutations.
 - Run a laptop-scale falsification trial: compare scoped knowledge packs with direct whole-corpus EIL on retrieval precision, context size and setup time. Do not build a registry unless the pack abstraction earns its complexity.
@@ -68,6 +69,7 @@ Add promotion workflows, tenant quotas, domain ownership, conformance suite, SLO
 8. Set autonomy tiers and identify the first permitted mutation, if any.
 9. Agree SLOs, quotas, budget limits and pilot success thresholds.
 10. Confirm the EIL per-user HTTP identity milestone and name its owner/date before planning any shared-index phase.
+11. Confirm EIL's installation shape is cleared on the product owner's actual corp laptop (ADR-010) before Phase 0 technical validation is treated as sufficient to proceed to Phase 1.
 
 ## Work explicitly excluded until approval
 
