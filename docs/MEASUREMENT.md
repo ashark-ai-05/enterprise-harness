@@ -154,19 +154,15 @@ choice nobody has made yet**:
 | `AND d.id = ANY(lock_ids)` on the same FTS query | same as A and B | **Yes** — all three arms differ only by predicate |
 | Fetch locked document ids directly, bypassing FTS | genuinely different | **No** — the confound is real |
 
-This does not change the default, and Codex's reasoning for it stands
-independently: exclude B → C latency, compare retrieval quality, and do not
-pre-build a production index merely to balance an experiment. If anything the
-correction *strengthens* that argument — there may be nothing to balance.
+`PACK_RESOLUTION.md` now resolves the design: arm C **must** be an ID predicate
+on the same FTS/visibility/validity query, never a direct fetch path. Latency is
+therefore comparable by construction and may be reported across A/B/C, with the
+predicate and query plan recorded. Do not pre-build a production hierarchy
+index merely to balance the experiment; the pilot measures the selected query
+shapes as they are.
 
-What it changes is the status of the exclusion. It is a **default pending arm C's
-design**, not a permanent finding. If arm C lands as a predicate on the same
-query, the arms are comparable and latency becomes usable again; the team should
-revisit it then rather than discard the metric for good on a mechanism that
-turned out not to apply.
-
-What must not happen either way is reporting a B → C latency delta without
-stating which access path each arm used.
+What must not happen is reporting a B → C latency delta without proving that
+all arms used the shared read path and recording their predicates/query plans.
 
 ### The reuse problem, which single-query precision cannot see
 
