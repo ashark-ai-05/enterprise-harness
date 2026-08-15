@@ -10,16 +10,14 @@ Time-box a design validation using existing EIL and Observability demonstrations
 
 - Interview 3–5 target teams and select one change workflow.
 - Trace identity, ACL, citation, deletion and revocation end to end.
-- Specify pack, capability, workflow and event schemas.
-- Build paper prototypes for CLI, pack registry and run evidence.
-- Validate approved Node, Postgres, object store, sandbox, registry, policy and model gateway choices.
-- Measure expected concurrency, run duration, artifact size, retrieval volume and telemetry volume.
-- Threat-model prompt injection, plugins and mutations.
-- Run a server-side falsification trial through an approved client: compare scoped knowledge packs with direct whole-corpus EIL on retrieval precision, context size and setup time. Do not build a registry unless the pack abstraction earns its complexity.
+- Specify only the knowledge-pack, resolution-lock, measurement and event-contract deltas needed by P1. Defer capability/workflow schemas.
+- Build paper prototypes for the EIL MCP tool shape, manifest review and evidence output. Do not prototype a new CLI or registry.
+- Validate the existing EIL toolchain and the exact internal approval path for reviewed first-party changes.
+- Measure the baseline corpus/query families, retrieval volume, context size and evaluation cost needed for the falsification trial.
+- Threat-model pack scoping, partial views and indirect prompt injection. Defer mutation/sandbox threat modelling until P2 is requested.
+- Through the selected approved topology, compare scoped knowledge packs with direct whole-corpus EIL on recall, precision, context size and setup time. Do not build a registry unless the pack abstraction earns its complexity.
 - Read and test EIL's actual coverage/freshness contracts (`coverage`, source health, evidence bounds) before specifying harness equivalents. Extend those contracts; do not create a second definition of completeness or staleness.
-- Validate target clients can propagate the real caller identity through MCP. Record EIL per-user token and HTTP MCP delivery as a hard dependency for any shared index.
-- Inventory which already-approved Copilot/Amp/IDE clients support enterprise-authenticated remote MCP or approved HTTPS integration. No unapproved endpoint installation is an admissible workaround.
-- Confirm approved server runtime, artifact registry, deployment platform, private connectivity, SSO/OAuth delegation and corporate proxy paths.
+- Record client identity propagation, EIL per-user tokens and HTTP MCP as Phase-2 dependencies; do not put them on the local P1 critical path.
 - Confirm directly whether EIL's current source/lockfile/stdio installation is approved on the same corporate laptop, temporarily excepted, or running in another trust boundary. Do not infer this from development use.
 
 **Gate:** scoped packs demonstrate measurable value; approve the product boundary, pack semantics, ownership, pilot workflow, risk controls and success metrics.
@@ -35,6 +33,8 @@ Only after explicit approval: add the smallest proposed knowledge-pack contract 
 ## Shared-service prerequisite
 
 Architecture A is viable only under explicit approval and does not scale beyond its local single-principal boundary. Architecture B must not deploy until EIL's per-user tokens and HTTP MCP transport are implemented and adversarially verified. This is a dependency on EIL's roadmap, not a harness feature that can be approximated with local ACL filters or endpoint shims.
+
+Before Phase 2, inventory approved clients' authenticated remote MCP/HTTPS support and confirm approved server runtime, artifact registry, deployment platform, private connectivity, SSO/OAuth delegation and corporate proxy paths.
 
 ## Phase 2 — team-shared read-only service, only if P1 passes
 
