@@ -59,6 +59,7 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 
 ## Documents
 
+- [Product blueprint: functions, mockups, architecture and gaps](docs/PRODUCT_BLUEPRINT.md)
 - [Product and organizational model](docs/PRODUCT.md)
 - [Architecture and technology choices](docs/ARCHITECTURE.md)
 - [Pack specification](docs/PACK_SPEC.md)
