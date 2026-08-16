@@ -8,7 +8,7 @@ The product owner confirmed that DeepSeek Harness cannot be installed on the cor
 
 ## Decision
 
-The P1 knowledge-pack experiment defaults to a reviewed first-party extension inside EIL's existing source/lockfile/stdio boundary. This preserves one ACL, validation and audit path and avoids creating an operational service before product value is known.
+The P1 knowledge-pack experiment may use a reviewed first-party extension inside EIL's existing source/lockfile/stdio boundary only after the exact endpoint artifact, dependencies, launch model, client configuration, and proposed change are explicitly approved. This preserves one ACL, validation and audit path and avoids creating an operational service before product value is known; it is not an approval assumption.
 
 The later enterprise harness defaults to a centrally managed service. Already-approved Copilot, Amp, IDE, browser or automation clients reach it through enterprise-authenticated remote MCP/HTTPS. Authoritative tool plugins, credentials, models, durable run state, sandboxes and telemetry remain on approved infrastructure.
 
