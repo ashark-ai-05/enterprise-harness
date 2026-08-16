@@ -6,7 +6,9 @@ Product and architecture blueprint for a governed enterprise agent harness that 
 
 ## Product decision
 
-Build a thin orchestration control plane, not another knowledge platform and not a monolithic autonomous agent.
+**Decision (2026-08-16): do not build a separate harness runtime yet.** Prove the information-pack plane as a narrow EIL feature and measure it through Enterprise Observability; a governed orchestration service is deferred until shared, side-effecting workflow demand earns it. See [the decision memo](docs/DECISION_MEMO_2026-08-16.md).
+
+The **future target**, if Gate 3 is met, is a thin orchestration control plane—not another knowledge platform and not a monolithic autonomous agent.
 
 - **EIL** owns ingestion, normalized knowledge, source ACLs, indexing, retrieval, citations, and freshness.
 - **Enterprise Harness** owns workflow composition, capability discovery, policy checks, execution state, approvals, resumability, and evidence emission.
@@ -57,6 +59,7 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 
 ## Documents
 
+- [Product blueprint: functions, mockups, architecture and gaps](docs/PRODUCT_BLUEPRINT.md)
 - [Product and organizational model](docs/PRODUCT.md)
 - [Architecture and technology choices](docs/ARCHITECTURE.md)
 - [Pack specification](docs/PACK_SPEC.md)
@@ -65,6 +68,7 @@ The EIL remains the source of truth. A knowledge pack is a filter, never a grant
 - [Adoption, identity ceiling and product decomposition](docs/ADOPTION_AND_DECOMPOSITION.md)
 - [Deployment options pending approval evidence](docs/DEPLOYMENT_OPTIONS.md)
 - [Decision review and recommended defaults](docs/DECISION_REVIEW.md)
+- [2026-08-16 decision memo and staged product gates](docs/DECISION_MEMO_2026-08-16.md)
 - [Security and governance](docs/SECURITY_AND_GOVERNANCE.md)
 - [Delivery plan and decision gates](docs/DELIVERY_PLAN.md)
 - [DeepSeek Harness comparison](docs/REFERENCE_ASSESSMENT.md)

@@ -1,10 +1,12 @@
 # ADR-003: Governed Plugin Architecture
 
-Status: proposed
+Status: deferred pending Gate 3 in `docs/DECISION_MEMO_2026-08-16.md`
 
 ## Decision
 
-Use typed, signed capability plugins inspired by DeepSeek Harness, but keep identity, policy, credential brokering, isolation and audit in a non-replaceable kernel. I/O plugins run out of process according to trust tier.
+The information-pack pilot uses static, Git-reviewed manifest configuration only: no executable plugins, dynamic loading, registry, or endpoint installation.
+
+If Gate 3 earns governed execution, use typed, signed capability plugins inspired by DeepSeek Harness, but keep identity, policy, credential brokering, isolation and audit in a non-replaceable kernel. I/O plugins run out of process according to trust tier.
 
 ## Consequences
 
